@@ -10,6 +10,5 @@
     "skipLibCheck": true,
     "types": ["node", "vitest/globals"]
   },
-  "include": ["prototypes/**/*.ts", "vitest.config.ts"]
+  "include": ["prototypes/**/*.ts", "apps/api/**/*.ts", "packages/**/*.ts", "vitest.config.ts"]
 }
-

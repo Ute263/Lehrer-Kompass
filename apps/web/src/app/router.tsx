@@ -19,6 +19,7 @@ import {
 import { LessonPage } from "../features/lessons/LessonPages";
 import { AppShell } from "./AppShell";
 import { APP_ROUTES } from "./routes";
+import { ServerModePage } from "../features/server/ServerModePage";
 
 const DesignSystemPage = lazy(() => import("../prototype/DesignSystemPage").then((module) => ({ default: module.DesignSystemPage })));
 const calendarPages = () => import("../features/calendar/CalendarPages");
@@ -63,6 +64,7 @@ export function AppRoutes() {
       <Route element={<AppShell />}>
         <Route index element={<Navigate to={APP_ROUTES.workbench} replace />} />
         <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
+        <Route path="/server-test" element={<ServerModePage />} />
         <Route path={APP_ROUTES.classes} element={<ClassesPage />} />
         <Route path="/klassen/schuljahre" element={<SchoolYearsPage />} />
         <Route path="/klassen/:id" element={<ClassDetailPage />} />

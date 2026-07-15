@@ -1,6 +1,7 @@
 import { MAIN_NAVIGATION } from "./navigation";
 
 export function breadcrumbsForPath(pathname: string): Array<{ label: string; href?: string }> {
+  if(pathname==="/server-test")return[{label:"Server-Testmodus"}];
   if (pathname.startsWith("/prototyp/")) return [{ label: "Werkbank", href: "/werkbank" }, { label: "Arbeitsplatz-Vorschau" }];
   if (pathname.startsWith("/klassen/")) return [{ label: "Klassen", href: "/klassen" }, { label: pathname === "/klassen/schuljahre" ? "Schuljahre" : "Fachstruktur" }];
   if(pathname.startsWith("/reihen/"))return[{label:"Klassen",href:"/klassen"},{label:"Unterrichtsreihe"}];
