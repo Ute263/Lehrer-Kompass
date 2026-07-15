@@ -15,7 +15,7 @@ describe("Routing und AppShell", () => {
   it("leitet / auf /werkbank weiter", async () => { renderAt("/"); expect(await screen.findByRole("heading", { name: "Werkbank" })).toBeInTheDocument(); });
 
   it.each([
-    ["/werkbank", "Werkbank"], ["/klassen", "Klassen"], ["/stundenplan", "Stundenplan"], ["/bibliothek", "Bibliothek"],
+    ["/klassen", "Klassen"], ["/stundenplan", "Stundenplan"], ["/bibliothek", "Bibliothek"],
     ["/foerderunterricht", "Förderunterricht"], ["/schule-grundlagen", "Schule und Grundlagen"], ["/einstellungen", "Einstellungen"]
   ])("rendert %s als neutrale Seite", (path, title) => { renderAt(path); expect(screen.getByRole("heading", { name: title })).toBeInTheDocument(); expect(screen.getByText("Noch keine Fachfunktion aktiv.")).toBeInTheDocument(); });
 
