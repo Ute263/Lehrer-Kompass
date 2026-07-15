@@ -7,6 +7,7 @@ import { MAIN_NAVIGATION } from "./navigation";
 import { readNavigationCollapsed, writeNavigationCollapsed } from "./storage";
 import "./app-shell.css";
 import { BuddyPanel } from "../features/buddy/BuddyPanel";
+import { PwaNotices } from "../features/local-app/PwaNotices";
 
 type DrawerType = "buddy" | "library" | null;
 const syncStates = new Set<SyncState>(["local", "saving", "server", "pending", "offline", "conflict", "error"]);
@@ -57,7 +58,7 @@ export function AppShell() {
         <div className="topbar-leading"><IconButton className="desktop-navigation-toggle" label={collapsed ? "Navigation ausklappen" : "Navigation einklappen"} onClick={toggleNavigation}>{collapsed ? <PanelLeftOpen aria-hidden="true" /> : <PanelLeftClose aria-hidden="true" />}</IconButton><IconButton className="mobile-navigation-toggle" label="Mobile Navigation öffnen" onClick={() => setMobileOpen(true)}><Menu aria-hidden="true" /></IconButton><Breadcrumbs items={breadcrumbsForPath(location.pathname)} /></div>
         <div className="topbar-actions"><IconButton label="Globale Suche – noch nicht aktiv" disabled><Search aria-hidden="true" /></IconButton><Button variant="ghost" onClick={() => setDrawer("library")}><Library aria-hidden="true" size={18} />Bibliothek</Button><Button variant="ghost" onClick={() => setDrawer("buddy")}><Bot aria-hidden="true" size={18} />Buddy</Button><SyncIndicator state={syncState} /><span className="topbar-profile"><UserRound aria-hidden="true" /><span>Mein Arbeitsplatz</span></span></div>
       </header>
-      <main id="main-content" ref={mainRef} tabIndex={-1}><Outlet /></main>
+      <PwaNotices /><main id="main-content" ref={mainRef} tabIndex={-1}><Outlet /></main>
     </div>
 
     {mobileOpen && <div className="mobile-navigation-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileOpen(false); }}><aside ref={mobileNavRef} className="mobile-navigation" aria-label="Mobile Hauptnavigation"><div className="overlay__header"><div className="app-brand"><span aria-hidden="true">LK</span><strong>LehrerKompass</strong></div><IconButton label="Mobile Navigation schließen" onClick={() => setMobileOpen(false)}><X aria-hidden="true" /></IconButton></div><NavigationLinks collapsed={false} onNavigate={() => setMobileOpen(false)} /></aside></div>}

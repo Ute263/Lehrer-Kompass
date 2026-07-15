@@ -1,0 +1,2 @@
+# Sicherungsformat
+MIME: `application/vnd.lehrerkompass.backup+json`; Endung `.lehrerkompass.json`; Formatkennung `lehrerkompass-backup`, Formatversion 1, Dexie-Schema 7. Enthalten sind Manifest, alle lokalen Fach-/Material-/Buddy-/Versionsdaten und SHA-256-Prüfsummen für Manifest, Fachdaten, Materialien und Versionen. Nicht enthalten: Tokens, Cookies, Secrets, API-Schlüssel, Caches, Backendlogs oder externe Pfade. SHA-256 erkennt Beschädigung, ist keine kryptografische Signatur.

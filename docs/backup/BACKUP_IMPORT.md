@@ -1,0 +1,2 @@
+# Sicherungsimport
+Maximal 25 MB. JSON wird ohne HTML-Ausführung geparst, mit Zod validiert und gegen Format-, Schema- und Bereichsprüfsummen geprüft. Preview ist schreibfrei. Modi: Ersetzen, Zusammenführen, ausgewählte Bereiche. Gleiche ID mit abweichendem Inhalt wird als Konflikt angezeigt; beim Zusammenführen bleibt standardmäßig lokal. Vor jedem Commit entsteht ein Wiederherstellungspunkt, Änderungen laufen transaktional und ein Bericht wird gespeichert.
