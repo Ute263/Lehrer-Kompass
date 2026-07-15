@@ -14,5 +14,5 @@ export function clean(value:string){return value.trim().replace(/\s+/g," ");}
 export function optional(value?:string){const v=clean(value??""); return v||undefined;}
 
 export const ERROR_CODES=["SCHOOL_YEAR_INVALID_RANGE","SCHOOL_YEAR_NOT_FOUND","CLASS_DUPLICATE_LABEL","CLASS_NOT_FOUND","CLASS_ARCHIVED","SUBJECT_NOT_FOUND","CLASS_SUBJECT_NOT_ACTIVE","TOPIC_DUPLICATE_TITLE","TOPIC_NOT_FOUND","TOPIC_ARCHIVED","DOMAIN_DATA_INVALID"] as const;
-export type DomainErrorCode=(typeof ERROR_CODES)[number];
+export type DomainErrorCode=(typeof ERROR_CODES)[number]|"SERIES_TEMPLATE_NOT_FOUND"|"SERIES_TEMPLATE_DUPLICATE_TITLE"|"SERIES_TEMPLATE_ARCHIVED"|"SERIES_IMPLEMENTATION_NOT_FOUND"|"SERIES_IMPLEMENTATION_ARCHIVED"|"SERIES_INVALID_STATUS_TRANSITION"|"SERIES_CLASS_TOPIC_MISMATCH"|"SERIES_INVALID_DATE_RANGE"|"SERIES_SEQUENCE_ITEM_NOT_FOUND"|"SERIES_DATA_INVALID";
 export class DomainError extends Error { constructor(public code:DomainErrorCode,message:string){super(message);this.name="DomainError";} }

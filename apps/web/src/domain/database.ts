@@ -1,10 +1,12 @@
 import Dexie,{type EntityTable} from "dexie";
 import { classSubjectSchema, schoolYearSchema, subjectSchema, teachingClassSchema, topicSchema, DomainError, type ClassSubject,type SchoolYear,type SubjectDefinition,type TeachingClass,type Topic } from "./model";
+import type{SeriesTemplate,SeriesImplementation,SeriesPlanning,SeriesSequenceItem,SeriesWorkbenchRef}from"./series-model";
 
 type Meta={id:string;value:string};
 export class DomainDatabase extends Dexie {
   schoolYears!:EntityTable<SchoolYear,"id">; classes!:EntityTable<TeachingClass,"id">; subjects!:EntityTable<SubjectDefinition,"id">; classSubjects!:EntityTable<ClassSubject,"id">; topics!:EntityTable<Topic,"id">; meta!:EntityTable<Meta,"id">;
-  constructor(name="lehrerkompass-domain") { super(name); this.version(1).stores({schoolYears:"id,isActive,archivedAt",classes:"id,schoolYearId,isActive,archivedAt",subjects:"id,key,sortOrder",classSubjects:"id,classId,subjectId,[classId+subjectId],sortOrder",topics:"id,classId,subjectId,[classId+subjectId],status,sortOrder",meta:"id"}); }
+  seriesTemplates!:EntityTable<SeriesTemplate,"id">;seriesImplementations!:EntityTable<SeriesImplementation,"id">;seriesPlannings!:EntityTable<SeriesPlanning,"id">;seriesSequenceItems!:EntityTable<SeriesSequenceItem,"id">;seriesWorkbenchRefs!:EntityTable<SeriesWorkbenchRef,"id">;
+  constructor(name="lehrerkompass-domain") { super(name); this.version(1).stores({schoolYears:"id,isActive,archivedAt",classes:"id,schoolYearId,isActive,archivedAt",subjects:"id,key,sortOrder",classSubjects:"id,classId,subjectId,[classId+subjectId],sortOrder",topics:"id,classId,subjectId,[classId+subjectId],status,sortOrder",meta:"id"});this.version(2).stores({schoolYears:"id,isActive,archivedAt",classes:"id,schoolYearId,isActive,archivedAt",subjects:"id,key,sortOrder",classSubjects:"id,classId,subjectId,[classId+subjectId],sortOrder",topics:"id,classId,subjectId,[classId+subjectId],status,sortOrder",meta:"id",seriesTemplates:"id,topicId,status,[topicId+title]",seriesImplementations:"id,templateId,classId,schoolYearId,status",seriesPlannings:"id,implementationId",seriesSequenceItems:"id,implementationId,[implementationId+position]",seriesWorkbenchRefs:"id,implementationId,isActive"}); }
 }
 export const domainDb=new DomainDatabase("lehrerkompass-domain-v1");
 const now="2026-07-15T09:00:00.000Z";

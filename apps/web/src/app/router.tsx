@@ -5,6 +5,7 @@ import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePage";
 import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
+import{NewSeriesPage,SeriesDashboard,TemplatePage,TopicSeriesPage}from"../features/series/SeriesPages";
 import { AppShell } from "./AppShell";
 import { APP_ROUTES } from "./routes";
 
@@ -26,6 +27,10 @@ export function AppRoutes() {
       <Route path="/klassen/schuljahre" element={<SchoolYearsPage />} />
       <Route path="/klassen/:id" element={<ClassDetailPage />} />
       <Route path="/klassen/:id/faecher/:subjectId" element={<SubjectPage />} />
+      <Route path="/klassen/:id/faecher/:subjectId/themen/:topicId" element={<TopicSeriesPage />} />
+      <Route path="/reihen/neu" element={<NewSeriesPage />} />
+      <Route path="/reihen/:implementationId" element={<SeriesDashboard />} />
+      <Route path="/stammreihen/:templateId" element={<TemplatePage />} />
       {pages.map(([path, title, description]) => <Route key={path} path={path} element={<PlaceholderPage title={title} description={description} />} />)}
       <Route path="/prototyp/:bereich/:slug" element={<PrototypeWorkspacePage />} />
       <Route path="*" element={<NotFoundPage />} />
