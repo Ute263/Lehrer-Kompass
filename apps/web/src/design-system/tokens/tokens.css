@@ -1,0 +1,61 @@
+:root {
+  --color-page: #f4f7f8;
+  --color-card: #ffffff;
+  --color-soft: #edf4f6;
+  --color-primary: #2f6175;
+  --color-primary-hover: #244f60;
+  --color-turquoise: #3a8b8c;
+  --color-green: #4f8069;
+  --color-beige: #f5efe4;
+  --color-text: #18323d;
+  --color-text-secondary: #4a626b;
+  --color-text-muted: #687c83;
+  --color-border: #cbd8dc;
+  --color-focus: #0b6e99;
+  --color-info: #ddecf2;
+  --color-success: #e1f0e7;
+  --color-warning: #f7edcf;
+  --color-error: #f8e0df;
+  --color-destructive: #9b3f3b;
+  --font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-size-xs: 0.8125rem;
+  --font-size-sm: 0.9375rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.625rem;
+  --font-size-2xl: 2.125rem;
+  --line-tight: 1.2;
+  --line-normal: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 600;
+  --weight-bold: 700;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-round: 999px;
+  --shadow-sm: 0 1px 2px rgb(24 50 61 / 8%);
+  --shadow-md: 0 8px 28px rgb(24 50 61 / 12%);
+  --focus-ring: 0 0 0 3px rgb(11 110 153 / 28%);
+  --motion-short: 120ms;
+  --motion-medium: 220ms;
+  --control-min: 2.75rem;
+  --icon-control-min: 2.75rem;
+  --content-max: 82rem;
+  --reading-max: 46rem;
+  --nav-wide: 15.5rem;
+  --nav-narrow: 4.75rem;
+  --drawer-width: 25rem;
+  --breakpoint-tablet: 64rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --motion-short: 0ms; --motion-medium: 0ms; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
