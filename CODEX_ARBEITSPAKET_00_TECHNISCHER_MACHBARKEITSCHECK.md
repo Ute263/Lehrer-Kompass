@@ -11,6 +11,20 @@ Baue noch nicht die vollständige App. Prüfe fünf technisch riskante Bereiche 
 
 Verwende ausschließlich Demo-Daten, Mocks und einen ausdrücklich ausgewiesenen OneDrive-Testordner. Keine produktiven Daten oder echten Unterrichtsmaterialien verändern.
 
+## Verbindliche Konten- und Nutzerentscheidung
+Der erste reale Microsoft-Graph- und OneDrive-Test erfolgt mit Utes persönlichem Microsoft-Konto und ihrem privaten OneDrive. Das Schulkonto ist keine Voraussetzung und wird in diesem Paket nicht getestet.
+
+Die technische Lösung muss dennoch so entworfen werden, dass dieselbe installierbare App später von weiteren Lehrkräften mit deren jeweils eigenem Microsoft-Konto genutzt werden kann. Jede Person erhält einen vollständig getrennten persönlichen Arbeitsbereich. Es gibt keine gemeinsame Bearbeitung, keine Kolleginnenrollen und keine geteilten Fachdaten.
+
+Prüfe deshalb im Authentifizierungs- und Datenzugriffskonzept ausdrücklich:
+- Die angemeldete Identität bestimmt die interne `userId` beziehungsweise den persönlichen Workspace.
+- Der Client darf keine fremde `userId` vorgeben.
+- OneDrive-Token, Ordner-IDs und Dateiverknüpfungen werden nur dem aktuell angemeldeten Konto zugeordnet.
+- Ein Kontowechsel darf keine Daten oder OneDrive-Verknüpfungen des vorherigen Kontos sichtbar machen.
+- Persönliche Microsoft-Konten müssen unterstützt werden. Arbeits- und Schulkonten dürfen später optional ergänzt werden, werden aber nicht vorausgesetzt.
+
+Beachte zusätzlich `docs/decisions/ADR-001_PERSONAL_MICROSOFT_ACCOUNTS.md`.
+
 ## Vorprüfung
 Analysiere Repository, Stack, Tests, vorhandene Integrationen und Umgebungsvariablen. Erstelle `docs/reports/MACHBARKEIT_VORPRUEFUNG.md`.
 
