@@ -81,7 +81,7 @@ Wichtige Lücken werden ruhig angezeigt, blockieren den Arbeitsweg aber nicht.
 LehrerKompass plant praktische Förderung; FörderKompass bleibt für den ausführlichen Förderplan zuständig.
 
 ## DEC-027 – Version 1 ist privat und einbenutzerorientiert
-Keine Schülerzugänge, Kolleginnenrollen, öffentliche Materialplattform oder Mehrmandantenfähigkeit.
+Keine Schülerzugänge, Kolleginnenrollen, öffentliche Materialplattform oder gemeinsame Bearbeitung.
 
 ## DEC-028 – Entwicklung in prüfbaren Paketen
 Jedes Arbeitspaket erhält Branch, Tests, Bericht und klare Abnahme. Keine großflächigen Nebenarbeiten.
@@ -91,3 +91,15 @@ OneDrive, Dokumentexport, Offline-Sync, Buddy und Bibliothek werden vor der prod
 
 ## DEC-030 – Ehrliche technische Berichte
 Gemockt, vorbereitet, automatisch getestet und manuell geprüft werden ausdrücklich unterschieden.
+
+## DEC-031 – Persönliches Microsoft-Konto als erste Referenz
+Der erste reale OneDrive- und Microsoft-Graph-Test erfolgt mit Utes persönlichem Microsoft-Konto und einem privaten, ausschließlich dafür bestimmten Testordner. Das Schulkonto ist keine Voraussetzung.
+
+## DEC-032 – Eine App, getrennte persönliche Arbeitsbereiche
+Mehrere Lehrkräfte können dieselbe installierbare App verwenden, melden sich jedoch jeweils mit dem eigenen Konto an und erhalten vollständig getrennte App-Daten und OneDrive-Verknüpfungen.
+
+## DEC-033 – Keine Zusammenarbeit in Version 1
+Es gibt keine gemeinsamen Klassen, Bibliotheken, Rollen, Freigabeworkflows oder gleichzeitige Bearbeitung. Ein späterer Austausch erfolgt bewusst über Export und Import.
+
+## DEC-034 – Nutzertrennung von Beginn an
+Jedes serverseitige Fachobjekt wird einer aus der authentifizierten Sitzung bestimmten `userId` beziehungsweise einem persönlichen Workspace zugeordnet. Fremde Daten dürfen niemals durch clientseitig übermittelte Nutzerkennungen erreichbar sein.
