@@ -7,7 +7,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p apps/web/tsconfig.json --noEmit",
     "build": "pnpm typecheck && vite build --config apps/web/vite.config.ts",
     "test": "vitest run",
-    "test:a11y": "vitest run apps/web/src/test/accessibility.test.tsx apps/web/src/test/app-accessibility.test.tsx apps/web/src/features/workbench/tests/workbench-accessibility.test.tsx apps/web/src/features/classes/tests/classes-accessibility.test.tsx apps/web/src/features/series/series-accessibility.test.tsx apps/web/src/features/lessons/lessons-accessibility.test.tsx",
+    "test:a11y": "vitest run apps/web/src/test/accessibility.test.tsx apps/web/src/test/app-accessibility.test.tsx apps/web/src/features/workbench/tests/workbench-accessibility.test.tsx apps/web/src/features/classes/tests/classes-accessibility.test.tsx apps/web/src/features/series/series-accessibility.test.tsx apps/web/src/features/lessons/lessons-accessibility.test.tsx apps/web/src/features/calendar/calendar-accessibility.test.tsx",
     "test:coverage": "vitest run --coverage",
     "test:graph:personal": "tsx prototypes/onedrive/src/personal-graph-smoke.ts",
     "artifacts": "tsx prototypes/documents/src/generate.ts && tsx prototypes/library-index/src/generate-fixtures.ts",

@@ -7,7 +7,12 @@ React Router wird zentral über `App.tsx`, `router.tsx` und `routes.ts` konfigur
 | `/` | Weiterleitung nach `/werkbank` |
 | `/werkbank` | neutraler Werkbank-Platzhalter |
 | `/klassen` | neutraler Klassen-Platzhalter |
-| `/stundenplan` | neutraler Stundenplan-Platzhalter |
+| `/stundenplan` | Wochen- und Tagesansicht des lokalen Kalenders |
+| `/stundenplan/tag/:date` | Tagesansicht eines Schuldatums |
+| `/stundenplan/einstellungen` | Unterrichtsblöcke und fester Wochenstundenplan |
+| `/kalender/termine/:eventId` | konkreter Kalendereintrag |
+| `/tagesuebersicht/:date` | abgeleitete Tagesübersicht |
+| `/vertretungsuebersicht/:date` | datenschutzreduzierte Vertretungsübersicht |
 | `/bibliothek` | neutraler Bibliothek-Platzhalter |
 | `/foerderunterricht` | neutraler Förderunterricht-Platzhalter |
 | `/schule-grundlagen` | neutraler Grundlagen-Platzhalter |

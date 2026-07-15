@@ -17,9 +17,11 @@ describe("Routing und AppShell", () => {
   it("rendert /klassen als Facharbeitsplatz", async () => { renderAt("/klassen"); expect(await screen.findByRole("heading", { name: "Klassen" })).toBeInTheDocument(); expect(screen.queryByText("Noch keine Fachfunktion aktiv.")).not.toBeInTheDocument(); });
 
   it.each([
-    ["/stundenplan", "Stundenplan"], ["/bibliothek", "Bibliothek"],
+    ["/bibliothek", "Bibliothek"],
     ["/foerderunterricht", "Förderunterricht"], ["/schule-grundlagen", "Schule und Grundlagen"], ["/einstellungen", "Einstellungen"]
   ])("rendert %s als neutrale Seite", (path, title) => { renderAt(path); expect(screen.getByRole("heading", { name: title })).toBeInTheDocument(); expect(screen.getByText("Noch keine Fachfunktion aktiv.")).toBeInTheDocument(); });
+
+  it("rendert /stundenplan als Facharbeitsplatz",async()=>{renderAt("/stundenplan");expect(await screen.findByRole("heading",{name:"Stundenplan"})).toBeInTheDocument();expect(screen.queryByText("Noch keine Fachfunktion aktiv.")).not.toBeInTheDocument()});
 
   it("markiert die aktive Navigation semantisch", () => { renderAt("/klassen"); expect(screen.getByRole("link", { name: "Klassen" })).toHaveAttribute("aria-current", "page"); });
 

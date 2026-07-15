@@ -235,6 +235,7 @@ export function LessonPage() {
         >
           {ref?.isActive ? "Von Werkbank nehmen" : "Auf Werkbank legen"}
         </Button>
+        <Link className="button-link" to={`/stundenplan?lessonId=${lesson.id}`}>Einplanen</Link>
         <Button variant="ghost" onClick={async()=>{await lessonService.archiveLesson(lesson.id);location.assign(`/reihen/${lesson.implementationId}`)}}>Stunde archivieren</Button>
         <Button
           variant="ghost"
