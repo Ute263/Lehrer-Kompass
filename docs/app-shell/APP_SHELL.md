@@ -10,7 +10,7 @@ Der Hauptinhalt erhält den größten verfügbaren Anteil. Desktop: Navigation 1
 
 ## Drawer
 
-Ein gemeinsamer `Drawer` zeigt entweder Buddy- oder Bibliotheksinhalt; der Zustand ist ein einzelner diskriminierter Wert, daher können nie zwei Drawer parallel offen sein. Beide Inhalte sind ausdrücklich als inaktive Platzhalter gekennzeichnet. Escape, Fokusfalle, Schließen über Overlay und Fokusrückgabe stammen aus dem Paket-01-Designsystem.
+Ein gemeinsamer `Drawer` zeigt entweder Buddy- oder Bibliotheksinhalt; der Zustand ist ein einzelner diskriminierter Wert, daher können nie zwei Drawer parallel offen sein. Der Buddy ist seit Paket 09 kontextbezogen aktiv, die Bibliothek bleibt als inaktiver Platzhalter gekennzeichnet. Escape, Fokusfalle, Schließen über Overlay und Fokusrückgabe stammen aus dem Paket-01-Designsystem.
 
 ## Responsive Regeln
 

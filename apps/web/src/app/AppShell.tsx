@@ -6,6 +6,7 @@ import { breadcrumbsForPath } from "./breadcrumbs";
 import { MAIN_NAVIGATION } from "./navigation";
 import { readNavigationCollapsed, writeNavigationCollapsed } from "./storage";
 import "./app-shell.css";
+import { BuddyPanel } from "../features/buddy/BuddyPanel";
 
 type DrawerType = "buddy" | "library" | null;
 const syncStates = new Set<SyncState>(["local", "saving", "server", "pending", "offline", "conflict", "error"]);
@@ -61,6 +62,6 @@ export function AppShell() {
 
     {mobileOpen && <div className="mobile-navigation-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileOpen(false); }}><aside ref={mobileNavRef} className="mobile-navigation" aria-label="Mobile Hauptnavigation"><div className="overlay__header"><div className="app-brand"><span aria-hidden="true">LK</span><strong>LehrerKompass</strong></div><IconButton label="Mobile Navigation schließen" onClick={() => setMobileOpen(false)}><X aria-hidden="true" /></IconButton></div><NavigationLinks collapsed={false} onNavigate={() => setMobileOpen(false)} /></aside></div>}
 
-    <Drawer open={drawer !== null} title={drawerTitle} onClose={closeDrawer}>{drawer === "buddy" ? <><p>Hier unterstützt dich später dein KI-Buddy bei Planung, Ideen und Reflexion.</p><Notice variant="info" title="Platzhalter">Noch keine KI-Funktion aktiv.</Notice></> : <><p>Hier erscheinen später passende Materialien zum aktuellen Arbeitskontext.</p><Notice variant="info" title="Platzhalter">Noch keine Bibliothekssuche aktiv.</Notice></>}</Drawer>
+    <Drawer open={drawer !== null} title={drawerTitle} onClose={closeDrawer}>{drawer === "buddy" ? <BuddyPanel pathname={location.pathname}/> : <><p>Hier erscheinen später passende Materialien zum aktuellen Arbeitskontext.</p><Notice variant="info" title="Platzhalter">Noch keine Bibliothekssuche aktiv.</Notice></>}</Drawer>
   </div>;
 }

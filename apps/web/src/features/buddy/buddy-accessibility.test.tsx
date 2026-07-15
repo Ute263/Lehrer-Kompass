@@ -1,0 +1,3 @@
+// @vitest-environment jsdom
+import{beforeEach,expect,it}from"vitest";import{render,waitFor}from"@testing-library/react";import{MemoryRouter}from"react-router-dom";import axe from"axe-core";import{AppRoutes}from"../../app/router";import{domainDb}from"../../domain";
+beforeEach(async()=>{localStorage.clear();await domainDb.delete();await domainDb.open()});for(const path of["/stunden/lesson-nomen-1?drawer=buddy","/materialien/material-nomen-standard?drawer=buddy"]){it(`axe Buddy ${path}`,async()=>{const{container}=render(<MemoryRouter initialEntries={[path]}><AppRoutes/></MemoryRouter>);await waitFor(()=>expect(container.querySelector('[role="dialog"][aria-label], [role="dialog"][aria-labelledby]')).toBeTruthy());expect((await axe.run(container)).violations).toEqual([])})}

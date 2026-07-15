@@ -111,7 +111,7 @@ it("migriert v4 nach v5 und erhält Kalenderdaten", async () => {
   const next = new DomainDatabase(name);
   await next.open();
   expect(await next.calendarEvents.get("kept-event")).toBeTruthy();
-  expect(next.verno).toBe(5);
+  expect(next.verno).toBe(6);
   await next.delete();
 });
 
@@ -125,6 +125,6 @@ it("migriert vollständig v1 bis v5 und erhält Themen", async () => {
   const next = new DomainDatabase(name);
   await next.open();
   expect(await next.topics.get("kept-topic")).toBeTruthy();
-  expect(next.verno).toBe(5);
+  expect(next.verno).toBe(6);
   await next.delete();
 });

@@ -36,11 +36,11 @@ export function Dialog({ open, title, onClose, children, confirmLabel = "Überne
 }
 
 export function Drawer({ open, title, onClose, children }: { open: boolean; title: string; onClose: () => void; children: ReactNode }) {
-  const ref = useRef<HTMLElement>(null); useModalFocus(open, onClose, ref);
+  const ref = useRef<HTMLDivElement>(null); useModalFocus(open, onClose, ref);
   if (!open) return null;
   return <div className="drawer-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-    <aside ref={ref} className="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+    <div ref={ref} className="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
       <div className="overlay__header"><h2 id="drawer-title">{title}</h2><IconButton label="Seitenbereich schließen" onClick={onClose}><X aria-hidden="true" /></IconButton></div>{children}
-    </aside>
+    </div>
   </div>;
 }

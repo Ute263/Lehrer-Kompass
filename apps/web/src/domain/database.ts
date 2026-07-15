@@ -28,6 +28,7 @@ import type {
 } from "./lesson-model";
 import type {CalendarEvent,CalendarEventHistory,TimetablePeriod,WeeklyScheduleSlot} from "./calendar-model";
 import type {Material,MaterialBlock,MaterialDocument,MaterialFamily,MaterialLink,MaterialPage,MaterialSolution,MaterialVariant,MaterialVersion} from "./material-model";
+import type {BuddyRequestRecord,BuddySuggestionChange,BuddySuggestionRecord,BuddyVersion} from "../ai/contracts";
 
 type Meta = { id: string; value: string };
 export class DomainDatabase extends Dexie {
@@ -52,6 +53,7 @@ export class DomainDatabase extends Dexie {
   calendarEvents!:EntityTable<CalendarEvent,"id">;
   calendarEventHistory!:EntityTable<CalendarEventHistory,"id">;
   materialFamilies!:EntityTable<MaterialFamily,"id">;materials!:EntityTable<Material,"id">;materialVariants!:EntityTable<MaterialVariant,"id">;materialDocuments!:EntityTable<MaterialDocument,"id">;materialPages!:EntityTable<MaterialPage,"id">;materialBlocks!:EntityTable<MaterialBlock,"id">;materialSolutions!:EntityTable<MaterialSolution,"id">;materialLinks!:EntityTable<MaterialLink,"id">;materialVersions!:EntityTable<MaterialVersion,"id">;
+  buddyRequests!:EntityTable<BuddyRequestRecord,"id">;buddySuggestions!:EntityTable<BuddySuggestionRecord,"id">;buddySuggestionChanges!:EntityTable<BuddySuggestionChange,"id">;buddyVersions!:EntityTable<BuddyVersion,"id">;
   constructor(name = "lehrerkompass-domain") {
     super(name);
     this.version(1).stores({
@@ -103,6 +105,10 @@ export class DomainDatabase extends Dexie {
     this.version(5).stores({
       schoolYears:"id,isActive,archivedAt",classes:"id,schoolYearId,isActive,archivedAt",subjects:"id,key,sortOrder",classSubjects:"id,classId,subjectId,[classId+subjectId],sortOrder",topics:"id,classId,subjectId,[classId+subjectId],status,sortOrder",meta:"id",seriesTemplates:"id,topicId,status,[topicId+title]",seriesImplementations:"id,templateId,classId,schoolYearId,status",seriesPlannings:"id,implementationId",seriesSequenceItems:"id,implementationId,[implementationId+position]",seriesWorkbenchRefs:"id,implementationId,isActive",lessons:"id,implementationId,sequenceItemId,[implementationId+position],status,archivedAt",lessonPlannings:"id,lessonId",lessonPhases:"id,lessonId,[lessonId+position]",lessonReflections:"id,lessonId",lessonWorkbenchRefs:"id,lessonId,isActive",timetablePeriods:"id,position,isActive,[startsAt+endsAt]",weeklyScheduleSlots:"id,schoolYearId,weekday,periodId,[schoolYearId+weekday+periodId],status",calendarEvents:"id,schoolYearId,date,periodId,lessonId,status,[date+periodId],archivedAt",calendarEventHistory:"id,eventId,action",
       materialFamilies:"id,baseMaterialId,archivedAt",materials:"id,familyId,materialType,status,classId,subjectId,topicId,lessonId,archivedAt",materialVariants:"id,materialId,variantType",materialDocuments:"id,materialId",materialPages:"id,documentId,[documentId+position],archivedAt",materialBlocks:"id,pageId,[pageId+position],blockType,archivedAt",materialSolutions:"id,taskBlockId,isVerified",materialLinks:"id,materialId,targetType,targetId,[materialId+targetType+targetId]",materialVersions:"id,materialId,createdAt"
+    });
+    this.version(6).stores({
+      schoolYears:"id,isActive,archivedAt",classes:"id,schoolYearId,isActive,archivedAt",subjects:"id,key,sortOrder",classSubjects:"id,classId,subjectId,[classId+subjectId],sortOrder",topics:"id,classId,subjectId,[classId+subjectId],status,sortOrder",meta:"id",seriesTemplates:"id,topicId,status,[topicId+title]",seriesImplementations:"id,templateId,classId,schoolYearId,status",seriesPlannings:"id,implementationId",seriesSequenceItems:"id,implementationId,[implementationId+position]",seriesWorkbenchRefs:"id,implementationId,isActive",lessons:"id,implementationId,sequenceItemId,[implementationId+position],status,archivedAt",lessonPlannings:"id,lessonId",lessonPhases:"id,lessonId,[lessonId+position]",lessonReflections:"id,lessonId",lessonWorkbenchRefs:"id,lessonId,isActive",timetablePeriods:"id,position,isActive,[startsAt+endsAt]",weeklyScheduleSlots:"id,schoolYearId,weekday,periodId,[schoolYearId+weekday+periodId],status",calendarEvents:"id,schoolYearId,date,periodId,lessonId,status,[date+periodId],archivedAt",calendarEventHistory:"id,eventId,action",materialFamilies:"id,baseMaterialId,archivedAt",materials:"id,familyId,materialType,status,classId,subjectId,topicId,lessonId,archivedAt",materialVariants:"id,materialId,variantType",materialDocuments:"id,materialId",materialPages:"id,documentId,[documentId+position],archivedAt",materialBlocks:"id,pageId,[pageId+position],blockType,archivedAt",materialSolutions:"id,taskBlockId,isVerified",materialLinks:"id,materialId,targetType,targetId,[materialId+targetType+targetId]",materialVersions:"id,materialId,createdAt",
+      buddyRequests:"id,targetType,targetId,capabilityKey,status,createdAt",buddySuggestions:"id,requestId,targetType,targetId,capabilityKey,status,createdAt",buddySuggestionChanges:"id,suggestionId,[suggestionId+position],selected,applied",buddyVersions:"id,targetType,targetId,suggestionId,createdAt"
     });
   }
 }
