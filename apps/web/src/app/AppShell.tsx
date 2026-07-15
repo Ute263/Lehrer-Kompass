@@ -6,6 +6,7 @@ import { breadcrumbsForPath } from "./breadcrumbs";
 import { MAIN_NAVIGATION } from "./navigation";
 import { readNavigationCollapsed, writeNavigationCollapsed } from "./storage";
 import "./app-shell.css";
+import "./visual-refresh.css";
 import { BuddyPanel } from "../features/buddy/BuddyPanel";
 import { PwaNotices } from "../features/local-app/PwaNotices";
 
