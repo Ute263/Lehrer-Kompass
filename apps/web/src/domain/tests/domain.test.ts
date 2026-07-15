@@ -1,0 +1,19 @@
+import "fake-indexeddb/auto";import{afterEach,beforeEach,describe,expect,it}from"vitest";import{DomainDatabase,seedDomain,SEED_IDS,DomainService,DomainError}from"..";
+let db:DomainDatabase,service:DomainService;beforeEach(async()=>{db=new DomainDatabase(`test-${crypto.randomUUID()}`);service=new DomainService(db);await seedDomain(db)});afterEach(()=>db.delete());
+const fails=async(p:Promise<unknown>,code:string)=>{await expect(p).rejects.toMatchObject({code})};
+describe("fachliches Grundmodell",()=>{
+it("seedet genau ein aktives Schuljahr",async()=>expect((await db.schoolYears.toArray()).filter(y=>y.isActive)).toHaveLength(1));
+it("weist ungültige Zeiträume zurück",()=>fails(service.createSchoolYear({label:"x",startsOn:"2027-08-01",endsOn:"2027-07-01"}),"SCHOOL_YEAR_INVALID_RANGE"));
+it("deaktiviert beim Aktivieren das bisherige Schuljahr",async()=>{const y=await service.createSchoolYear({label:"2027/28",startsOn:"2027-08-01",endsOn:"2028-07-31"});await service.activateSchoolYear(y.id);expect((await db.schoolYears.toArray()).filter(v=>v.isActive)).toEqual([expect.objectContaining({id:y.id})])});
+it("verhindert doppelte Klassennamen je Schuljahr normalisiert",()=>fails(service.createClass({schoolYearId:SEED_IDS.activeYear,label:" 2A ",gradeLevel:2,subjectIds:[SEED_IDS.german]}),"CLASS_DUPLICATE_LABEL"));
+it("erlaubt gleiche Klassennamen in verschiedenen Schuljahren",async()=>{const c=await service.createClass({schoolYearId:SEED_IDS.oldYear,label:"3a",gradeLevel:3,subjectIds:[SEED_IDS.german]});expect(c.label).toBe("3a")});
+it("archiviert Klassen ohne Löschen",async()=>{await service.archiveClass(SEED_IDS.class2a);expect(await db.classes.get(SEED_IDS.class2a)).toMatchObject({isActive:false,archivedAt:expect.any(String)})});
+it("meldet unbekannte Klassen strukturiert",()=>fails(service.archiveClass("missing"),"CLASS_NOT_FOUND"));
+it("deaktiviert Fächer und bewahrt Themen",async()=>{await service.setSubjectActive(SEED_IDS.class2a,SEED_IDS.german,false);expect(await db.topics.get(SEED_IDS.topicNouns)).toBeTruthy();expect(await db.classSubjects.where("[classId+subjectId]").equals([SEED_IDS.class2a,SEED_IDS.german]).first()).toMatchObject({isActive:false})});
+it("verhindert Themen in deaktivierten Fächern",async()=>{await service.setSubjectActive(SEED_IDS.class2a,SEED_IDS.german,false);await fails(service.createTopic({classId:SEED_IDS.class2a,subjectId:SEED_IDS.german,title:"Verben"}),"CLASS_SUBJECT_NOT_ACTIVE")});
+it("verhindert doppelte Thementitel im selben Klassenfach",()=>fails(service.createTopic({classId:SEED_IDS.class2a,subjectId:SEED_IDS.german,title:" nomen "}),"TOPIC_DUPLICATE_TITLE"));
+it("erlaubt denselben Thementitel in einem anderen Fach",async()=>expect(await service.createTopic({classId:SEED_IDS.class2a,subjectId:SEED_IDS.math,title:"Nomen"})).toMatchObject({title:"Nomen"}));
+it("archiviert und stellt Themen wieder her",async()=>{await service.archiveTopic(SEED_IDS.topicNouns);expect(await db.topics.get(SEED_IDS.topicNouns)).toMatchObject({status:"archived"});await service.restoreTopic(SEED_IDS.topicNouns);const restored=await db.topics.get(SEED_IDS.topicNouns);expect(restored).toMatchObject({status:"active"});expect(restored).not.toHaveProperty("archivedAt")});
+it("ordnet Themen stabil um",async()=>{const before=(await db.topics.where("[classId+subjectId]").equals([SEED_IDS.class2a,SEED_IDS.german]).sortBy("sortOrder"));await service.reorderTopics(SEED_IDS.class2a,SEED_IDS.german,before[1]!.id,-1);const after=await db.topics.where("[classId+subjectId]").equals([SEED_IDS.class2a,SEED_IDS.german]).sortBy("sortOrder");expect(after[0]!.id).toBe(before[1]!.id)});
+it("blockiert korrupte gespeicherte Daten über Zod",async()=>{await db.schoolYears.put({id:"bad",label:"",startsOn:"x",endsOn:"y",isActive:false,createdAt:"x",updatedAt:"x"}as never);await expect(service.snapshot()).rejects.toBeInstanceOf(DomainError)});
+});

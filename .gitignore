@@ -1,0 +1,30 @@
+node_modules/
+coverage/
+dist/
+tmp/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+*.pid
+*.sock
+*.sqlite
+*.sqlite3
+*.db
+
+# Lokale Build-, Werkzeug- und Laufzeitdaten
+.cache/
+.vite/
+.turbo/
+.runtime/
+*.local
+
+# Lokale PostgreSQL-/Integrationstestdaten
+pgdata/
+postgres-data/
+postgresql-data/
+
+# Nicht zum LehrerKompass-Repository gehörende lokale Übergaben
+/FoerderKompass_Hotfix_v295.zip
+/foerderplan-assistent 3/

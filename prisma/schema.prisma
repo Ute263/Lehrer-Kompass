@@ -1,0 +1,375 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountType {
+  personal
+  work_school
+}
+
+model User {
+  id              String      @id @default(uuid())
+  providerSubject String      @unique
+  accountType     AccountType
+  displayName     String?
+  disabledAt      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model Workspace {
+  id          String    @id @default(uuid())
+  ownerUserId String    @unique
+  name        String
+  archivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Session {
+  id          String    @id @default(uuid())
+  userId      String
+  workspaceId String
+  csrfHash    String
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+// Every domain row carries workspaceId. Relations are tightened in the reviewed SQL migration.
+model SchoolYear {
+  id          String    @id @default(uuid())
+  workspaceId String
+  label       String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, label])
+}
+
+model TeachingClass {
+  id           String    @id @default(uuid())
+  workspaceId  String
+  schoolYearId String
+  label        String
+  version      Int       @default(1)
+  archivedAt   DateTime?
+
+  @@unique([workspaceId, schoolYearId, label])
+}
+
+model SubjectDefinition {
+  id          String    @id @default(uuid())
+  workspaceId String
+  title       String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, title])
+}
+
+model ClassSubject {
+  id          String    @id @default(uuid())
+  workspaceId String
+  classId     String
+  subjectId   String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, classId, subjectId])
+}
+
+model Topic {
+  id          String    @id @default(uuid())
+  workspaceId String
+  classId     String
+  subjectId   String
+  title       String
+  version     Int       @default(1)
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, classId, subjectId, title])
+}
+
+model SeriesTemplate {
+  id          String    @id @default(uuid())
+  workspaceId String
+  topicId     String
+  title       String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, topicId, title])
+}
+
+model SeriesImplementation {
+  id          String    @id @default(uuid())
+  workspaceId String
+  templateId  String
+  classId     String
+  title       String
+  version     Int       @default(1)
+  archivedAt  DateTime?
+
+  @@index([workspaceId, templateId])
+}
+
+model SeriesPlanning {
+  id               String    @id @default(uuid())
+  workspaceId      String
+  implementationId String
+  content          Json
+  archivedAt       DateTime?
+
+  @@unique([workspaceId, implementationId])
+}
+
+model SeriesSequenceItem {
+  id               String    @id @default(uuid())
+  workspaceId      String
+  implementationId String
+  title            String
+  position         Int
+  archivedAt       DateTime?
+
+  @@unique([workspaceId, implementationId, position])
+}
+
+model Lesson {
+  id               String    @id @default(uuid())
+  workspaceId      String
+  implementationId String
+  title            String
+  version          Int       @default(1)
+  archivedAt       DateTime?
+
+  @@index([workspaceId, implementationId])
+}
+
+model LessonPlanning {
+  id          String    @id @default(uuid())
+  workspaceId String
+  lessonId    String
+  content     Json
+  version     Int       @default(1)
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, lessonId])
+}
+
+model LessonPhase {
+  id          String    @id @default(uuid())
+  workspaceId String
+  lessonId    String
+  title       String
+  position    Int
+  content     Json
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, lessonId, position])
+}
+
+model LessonReflection {
+  id          String    @id @default(uuid())
+  workspaceId String
+  lessonId    String
+  content     Json
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, lessonId])
+}
+
+model TimetablePeriod {
+  id          String    @id @default(uuid())
+  workspaceId String
+  title       String
+  position    Int
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, position])
+}
+
+model WeeklyScheduleSlot {
+  id          String    @id @default(uuid())
+  workspaceId String
+  periodId    String
+  weekday     Int
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, weekday, periodId])
+}
+
+model CalendarEvent {
+  id          String    @id @default(uuid())
+  workspaceId String
+  lessonId    String?
+  title       String
+  startsAt    DateTime
+  version     Int       @default(1)
+  archivedAt  DateTime?
+
+  @@index([workspaceId, startsAt])
+}
+
+model CalendarEventHistory {
+  id          String   @id @default(uuid())
+  workspaceId String
+  eventId     String
+  snapshot    Json
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId, eventId])
+}
+
+model MaterialFamily {
+  id          String    @id @default(uuid())
+  workspaceId String
+  title       String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, title])
+}
+
+model Material {
+  id          String    @id @default(uuid())
+  workspaceId String
+  familyId    String
+  title       String
+  version     Int       @default(1)
+  archivedAt  DateTime?
+
+  @@index([workspaceId, familyId])
+}
+
+model MaterialVariant {
+  id          String    @id @default(uuid())
+  workspaceId String
+  materialId  String
+  title       String
+  archivedAt  DateTime?
+
+  @@index([workspaceId, materialId])
+}
+
+model MaterialDocument {
+  id          String    @id @default(uuid())
+  workspaceId String
+  materialId  String
+  settings    Json
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, materialId])
+}
+
+model MaterialPage {
+  id          String    @id @default(uuid())
+  workspaceId String
+  documentId  String
+  position    Int
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, documentId, position])
+}
+
+model MaterialBlock {
+  id          String    @id @default(uuid())
+  workspaceId String
+  pageId      String
+  blockType   String
+  content     Json
+  position    Int
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, pageId, position])
+}
+
+model MaterialSolution {
+  id          String    @id @default(uuid())
+  workspaceId String
+  blockId     String
+  content     Json
+  archivedAt  DateTime?
+
+  @@index([workspaceId, blockId])
+}
+
+model MaterialLink {
+  id          String    @id @default(uuid())
+  workspaceId String
+  materialId  String
+  targetType  String
+  targetId    String
+  archivedAt  DateTime?
+
+  @@unique([workspaceId, materialId, targetType, targetId])
+}
+
+model MaterialVersion {
+  id          String   @id @default(uuid())
+  workspaceId String
+  materialId  String
+  snapshot    Json
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId, materialId])
+}
+
+model BuddyRequest {
+  id            String   @id @default(uuid())
+  workspaceId   String
+  targetType    String
+  targetId      String
+  capabilityKey String
+  createdAt     DateTime @default(now())
+
+  @@index([workspaceId, targetType, targetId])
+}
+
+model BuddySuggestion {
+  id            String @id @default(uuid())
+  workspaceId   String
+  requestId     String
+  targetVersion Int
+  summary       String
+  status        String
+
+  @@index([workspaceId, requestId])
+}
+
+model BuddySuggestionChange {
+  id           String  @id @default(uuid())
+  workspaceId  String
+  suggestionId String
+  operation    Json
+  selected     Boolean @default(true)
+
+  @@index([workspaceId, suggestionId])
+}
+
+model BuddyVersion {
+  id          String   @id @default(uuid())
+  workspaceId String
+  targetType  String
+  targetId    String
+  snapshot    Json
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId, targetType, targetId])
+}
+
+model AuditEvent {
+  id          String   @id @default(uuid())
+  workspaceId String
+  actorUserId String
+  action      String
+  targetType  String?
+  targetId    String?
+  outcome     String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([workspaceId, createdAt])
+}

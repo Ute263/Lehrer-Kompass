@@ -1,0 +1,2 @@
+# Reihenaustausch
+`.lehrerkompass-reihe.json` enthält Stammreihe und Grundstruktur, optional Stunden und Materialien. Standardmäßig fehlen Klassenbezeichnung, Reflexion, Kalender, private Notizen, Buddy-Verlauf und externe Pfade. Beim Import werden neue IDs erzeugt; eine bestehende Durchführung wird nicht überschrieben. Die aktuelle Service-API ist implementiert und automatisch geprüft, die vollständige Fach-UI bleibt eine bekannte Einschränkung.
