@@ -2,8 +2,8 @@ import { useId, useState, type KeyboardEvent, type ReactNode } from "react";
 import { ChevronDown, MoreHorizontal } from "lucide-react";
 import { IconButton } from "./actions";
 
-export function Breadcrumbs({ items }: { items: Array<{ label: string; href?: string }> }) {
-  return <nav aria-label="Brotkrumen"><ol className="breadcrumbs">{items.map((item, index) => <li key={item.label}>{item.href && index < items.length - 1 ? <a href={item.href}>{item.label}</a> : <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>}</li>)}</ol></nav>;
+export function Breadcrumbs({ items, label = "Brotkrumen" }: { items: Array<{ label: string; href?: string }>; label?: string }) {
+  return <nav aria-label={label}><ol className="breadcrumbs">{items.map((item, index) => <li key={item.label}>{item.href && index < items.length - 1 ? <a href={item.href}>{item.label}</a> : <span aria-current={index === items.length - 1 ? "page" : undefined}>{item.label}</span>}</li>)}</ol></nav>;
 }
 
 export function Tabs({ labels }: { labels: string[] }) {

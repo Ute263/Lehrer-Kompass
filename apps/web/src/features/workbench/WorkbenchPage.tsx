@@ -11,7 +11,7 @@ import "./workbench.css";
 export function WorkbenchPage() {
   const [params]=useSearchParams();const queryFilter=params.get("filter");const forcedFilter=WORKBENCH_FILTERS.includes(queryFilter as WorkbenchFilter)?queryFilter as WorkbenchFilter:null;
   const workbench=useWorkbench(params.get("state"),forcedFilter);const[pendingRemoval,setPendingRemoval]=useState<WorkbenchItem|null>(null);const[removed,setRemoved]=useState<WorkbenchItem|null>(null);const[future,setFuture]=useState<string|null>(null);
-  const closeRemoval=useCallback(()=>setPendingRemoval(null),[]);const confirmRemoval=()=>{if(pendingRemoval){workbench.remove(pendingRemoval.id);setRemoved(pendingRemoval);}};
+  const closeRemoval=useCallback(()=>setPendingRemoval(null),[]);const confirmRemoval=()=>{if(pendingRemoval){workbench.remove(pendingRemoval.id);setRemoved(pendingRemoval);setPendingRemoval(null);}};
   const nothingVisible=!workbench.pinned.length&&!workbench.current.length&&!workbench.completed.length;
   return <div className="workbench-page"><PageHeader title="Werkbank" description="Hier liegt, woran du gerade arbeitest." action={<div className="page-actions"><Button onClick={()=>setFuture("Neue Unterrichtsreihe")}>Neue Unterrichtsreihe</Button><Button variant="secondary" onClick={()=>setFuture("Frühere Inhalte öffnen")}>Frühere Inhalte öffnen</Button></div>} />
     <div className="workbench-toolbar"><p>Hier liegt nur, woran gerade gearbeitet wird.</p><WorkbenchFilterControl value={workbench.filter} onChange={workbench.setFilter} /></div>

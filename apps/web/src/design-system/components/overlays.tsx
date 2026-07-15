@@ -30,7 +30,7 @@ export function Dialog({ open, title, onClose, children, confirmLabel = "Überne
   return <div className="overlay" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
     <div ref={ref} className="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
       <div className="overlay__header"><h2 id="dialog-title">{title}</h2><IconButton label="Dialog schließen" onClick={onClose}><X aria-hidden="true" /></IconButton></div>
-      <div>{children}</div><div className="overlay__actions"><Button variant="secondary" onClick={onClose}>{cancelLabel}</Button><Button onClick={() => { onConfirm?.(); onClose(); }}>{confirmLabel}</Button></div>
+      <div>{children}</div><div className="overlay__actions"><Button variant="secondary" onClick={onClose}>{cancelLabel}</Button><Button onClick={() => { if (onConfirm) onConfirm(); else onClose(); }}>{confirmLabel}</Button></div>
     </div>
   </div>;
 }

@@ -14,8 +14,10 @@ beforeEach(() => { localStorage.clear(); window.history.replaceState({}, "", "/"
 describe("Routing und AppShell", () => {
   it("leitet / auf /werkbank weiter", async () => { renderAt("/"); expect(await screen.findByRole("heading", { name: "Werkbank" })).toBeInTheDocument(); });
 
+  it("rendert /klassen als Facharbeitsplatz", async () => { renderAt("/klassen"); expect(await screen.findByRole("heading", { name: "Klassen" })).toBeInTheDocument(); expect(screen.queryByText("Noch keine Fachfunktion aktiv.")).not.toBeInTheDocument(); });
+
   it.each([
-    ["/klassen", "Klassen"], ["/stundenplan", "Stundenplan"], ["/bibliothek", "Bibliothek"],
+    ["/stundenplan", "Stundenplan"], ["/bibliothek", "Bibliothek"],
     ["/foerderunterricht", "Förderunterricht"], ["/schule-grundlagen", "Schule und Grundlagen"], ["/einstellungen", "Einstellungen"]
   ])("rendert %s als neutrale Seite", (path, title) => { renderAt(path); expect(screen.getByRole("heading", { name: title })).toBeInTheDocument(); expect(screen.getByText("Noch keine Fachfunktion aktiv.")).toBeInTheDocument(); });
 

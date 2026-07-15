@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Badge, Button, Card, Menu } from "../../design-system/components";
 import { STATUS_LABELS, TYPE_LABELS, type WorkbenchItem } from "./workbench-model";
 
-function contextFor(item: WorkbenchItem): string { return [item.classLabel,item.subjectLabel,item.subtitle].filter(Boolean).join(" · ") || "Persönlicher Arbeitsbereich"; }
+function contextFor(item: WorkbenchItem): string { return [item.classLabel,item.subjectLabel,item.topicLabel,item.subtitle].filter(Boolean).join(" · ") || "Persönlicher Arbeitsbereich"; }
 export function WorkbenchCard({ item, onTogglePinned, onRemove, onContinue }: { item: WorkbenchItem; onTogglePinned: () => void; onRemove: () => void; onContinue: () => void }) {
   const navigate=useNavigate(); const headingId=`workbench-${item.id}`; const StatusIcon=item.status==="completed"?CheckCircle2:CircleDot;
   const open=()=>{onContinue();navigate(item.targetRoute);};
