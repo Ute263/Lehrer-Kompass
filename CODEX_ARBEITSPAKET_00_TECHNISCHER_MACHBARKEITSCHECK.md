@@ -1,0 +1,68 @@
+# CODEX_ARBEITSPAKET_00
+## Technischer Machbarkeitscheck LehrerKompass
+
+## Auftrag
+Baue noch nicht die vollständige App. Prüfe fünf technisch riskante Bereiche als voneinander getrennte Prototypen:
+1. Microsoft-Anmeldung und OneDrive
+2. PDF- und DOCX-Erstellung
+3. Offline-Arbeiten und Autospeicherung
+4. Buddy mit strukturierter KI-Ausgabe
+5. Bibliotheksindex und Suche
+
+Verwende ausschließlich Demo-Daten, Mocks und einen ausdrücklich ausgewiesenen OneDrive-Testordner. Keine produktiven Daten oder echten Unterrichtsmaterialien verändern.
+
+## Vorprüfung
+Analysiere Repository, Stack, Tests, vorhandene Integrationen und Umgebungsvariablen. Erstelle `docs/reports/MACHBARKEIT_VORPRUEFUNG.md`.
+
+Lege Prototypen getrennt ab, beispielsweise unter:
+
+```text
+prototypes/
+├── onedrive/
+├── documents/
+├── offline-sync/
+├── buddy/
+└── library-index/
+```
+
+Jeder Prototyp benötigt README, Startanleitung, Umgebungsvariablen, Tests, manuelle Prüfschritte und Grenzen.
+
+## A – OneDrive
+Prüfe Anmeldung/Adapter, Ordnerauswahl, Auflistung, Upload, Abruf, Identifikation über `driveId` und `itemId`, Umbenennung und Verschiebung innerhalb des Testordners sowie Öffnen des tatsächlichen Speicherorts. Bestehende Dateien nicht überschreiben oder löschen. Fehlen Zugangsdaten: Mock und exakte Testanleitung erstellen. Bericht: `docs/reports/PROTOTYP_A_ONEDRIVE.md`.
+
+## B – PDF und DOCX
+Erzeuge aus einem strukturierten internen Materialmodell ein Demo-Arbeitsblatt „Nomen mit Artikeln erkennen“ für Klasse 2 mit vier Aufgaben, Name/Datum, ausreichenden Schreibflächen, neutralen Bildplatzhaltern und separater Lösung. Prüfe A4, 100-Prozent-Druck, Überlappungen, Seitenumbrüche und Schwarz-Weiß. DOCX muss bearbeitbar sein. Erzeuge:
+- `artifacts/machbarkeit/Nomen_mit_Artikeln_Test.pdf`
+- `artifacts/machbarkeit/Nomen_mit_Artikeln_Test.docx`
+
+Bericht: `docs/reports/PROTOTYP_B_DOKUMENTE.md`.
+
+## C – Offline und Autosave
+Nutze die Demo-Stunde „Nomen mit Artikeln erkennen“. Prüfe lokale Arbeitskopie in IndexedDB/Dexie, Bearbeitung bei simulierter Trennung, Neuladen, Synchronisationswarteschlange, Wiederverbindung und Versionskonflikt. Keine Fassung automatisch überschreiben. Status: lokal gespeichert, ausstehend, synchronisiert, Konflikt, fehlgeschlagen. Bericht: `docs/reports/PROTOTYP_C_OFFLINE_AUTOSAVE.md`.
+
+## D – Buddy
+Implementiere die Fähigkeit `shorten_lesson`. Ausgang: 52 Minuten, Ziel: 45 Minuten; Lernziel und Sicherung müssen erhalten bleiben. Ausgabe muss ein Zod-validiertes strukturiertes Schema mit Zusammenfassung, Änderungen pro Phase, Zeiten, Gründen, Quellen und Unsicherheiten erfüllen. Ursprüngliche Stunde bleibt unverändert; Vorschlag kann teilweise übernommen oder verworfen werden; vor Übernahme Version erzeugen. Führe einen Prompt-Injection-Test mit einer bösartigen simulierten Quelle durch. Fehlt API-Zugang: echten Adapter vorbereiten und Mock testen. Bericht: `docs/reports/PROTOTYP_D_BUDDY.md`.
+
+## E – Bibliothek
+Erzeuge mindestens zehn künstliche Testdateien aus verschiedenen Fächern und Materialarten. Speichere Titel, Typ, Klasse, Fach, Thema, Materialart, Bewertung, Speicherort, extrahierten Text und Indexstatus. Prüfe Suche nach „Nomen Klasse 2“, „wenig schreiben Nomen“, „bewährtes Arbeitsblatt“, „Wasser Versuch“ und „Lösung vorhanden“. Prüfe Filter und Mehrfachverknüpfung, ohne Originale zu kopieren. Eine unklare Datei erhält „Zuordnung prüfen“. Noch keine Vektorsuche. Bericht: `docs/reports/PROTOTYP_E_BIBLIOTHEK.md`.
+
+## Gemeinsame Anforderungen
+- TypeScript Strict Mode
+- Zod-Validierung
+- einheitliches Fehlerformat
+- keine Secrets im Frontend
+- `.env.example` ohne echte Werte
+- Unit- und Integrationstests, soweit automatisierbar
+- einfache, klar als Prototyp gekennzeichnete Testoberfläche; keine fertige Produkt-UI bauen
+
+## Gesamtbericht
+Erstelle `docs/reports/TECHNISCHER_MACHBARKEITSCHECK_GESAMTBERICHT.md` mit Repository-Ausgangslage, Ergebnis jedes Prototyps, Architekturfolgen, Hosting-Empfehlung, Sicherheits- und Datenschutzbewertung, Kosten-/Betriebsrisiken, offenen Zugangsdaten, wiederverwendbarem Code und einer eindeutigen Schlussentscheidung:
+- Hauptentwicklung kann beginnen.
+- Hauptentwicklung kann nach Anpassungen beginnen.
+- Ein weiterer Prototyp ist erforderlich.
+- Die Architektur ist zentral nicht tragfähig.
+
+Erstelle außerdem `docs/reports/PACKET_00_ABSCHLUSSBERICHT.md`.
+
+## Abschlussbedingungen
+Das Paket ist erst abgeschlossen, wenn alle fünf Bereiche umgesetzt oder transparent blockiert dokumentiert sind, keine Datei außerhalb des Testordners verändert wurde, alle automatisierbaren Tests liefen, PDF/DOCX-Artefakte vorliegen und eine klare Startempfehlung abgegeben wurde. Melde nichts als echt getestet, das nur vorbereitet, simuliert oder gemockt wurde.
