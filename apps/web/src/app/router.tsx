@@ -1,5 +1,5 @@
+import { lazy, Suspense, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { DesignSystemPage } from "../prototype/DesignSystemPage";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePage";
@@ -17,9 +17,21 @@ import {
   TopicSeriesPage,
 } from "../features/series/SeriesPages";
 import { LessonPage } from "../features/lessons/LessonPages";
-import {CalendarPage,CalendarSettingsPage,DayOverviewPage,EventPage} from "../features/calendar/CalendarPages";
 import { AppShell } from "./AppShell";
 import { APP_ROUTES } from "./routes";
+
+const DesignSystemPage = lazy(() => import("../prototype/DesignSystemPage").then((module) => ({ default: module.DesignSystemPage })));
+const calendarPages = () => import("../features/calendar/CalendarPages");
+const CalendarPage = lazy(() => calendarPages().then((module) => ({ default: module.CalendarPage })));
+const CalendarSettingsPage = lazy(() => calendarPages().then((module) => ({ default: module.CalendarSettingsPage })));
+const DayOverviewPage = lazy(() => calendarPages().then((module) => ({ default: module.DayOverviewPage })));
+const EventPage = lazy(() => calendarPages().then((module) => ({ default: module.EventPage })));
+const materialPages = () => import("../features/materials/MaterialPages");
+const NewMaterialPage = lazy(() => materialPages().then((module) => ({ default: module.NewMaterialPage })));
+const MaterialWorkshopPage = lazy(() => materialPages().then((module) => ({ default: module.MaterialWorkshopPage })));
+const MaterialPreviewPage = lazy(() => materialPages().then((module) => ({ default: module.MaterialPreviewPage })));
+const MaterialFamilyPage = lazy(() => materialPages().then((module) => ({ default: module.MaterialFamilyPage })));
+const deferred = (page: ReactNode) => <Suspense fallback={<p role="status">Arbeitsbereich wird geladen …</p>}>{page}</Suspense>;
 
 const pages = [
   [
@@ -47,7 +59,7 @@ const pages = [
 export function AppRoutes() {
   return (
     <Routes>
-      <Route path={APP_ROUTES.designSystem} element={<DesignSystemPage />} />
+      <Route path={APP_ROUTES.designSystem} element={deferred(<DesignSystemPage />)} />
       <Route element={<AppShell />}>
         <Route index element={<Navigate to={APP_ROUTES.workbench} replace />} />
         <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
@@ -66,12 +78,16 @@ export function AppRoutes() {
         <Route path="/reihen/:implementationId" element={<SeriesDashboard />} />
         <Route path="/stammreihen/:templateId" element={<TemplatePage />} />
       <Route path="/stunden/:lessonId" element={<LessonPage />} />
-      <Route path="/stundenplan" element={<CalendarPage />} />
-      <Route path="/stundenplan/tag/:date" element={<CalendarPage />} />
-      <Route path="/stundenplan/einstellungen" element={<CalendarSettingsPage />} />
-      <Route path="/kalender/termine/:eventId" element={<EventPage />} />
-      <Route path="/tagesuebersicht/:date" element={<DayOverviewPage />} />
-      <Route path="/vertretungsuebersicht/:date" element={<DayOverviewPage substitute />} />
+      <Route path="/stundenplan" element={deferred(<CalendarPage />)} />
+      <Route path="/stundenplan/tag/:date" element={deferred(<CalendarPage />)} />
+      <Route path="/stundenplan/einstellungen" element={deferred(<CalendarSettingsPage />)} />
+      <Route path="/kalender/termine/:eventId" element={deferred(<EventPage />)} />
+      <Route path="/tagesuebersicht/:date" element={deferred(<DayOverviewPage />)} />
+      <Route path="/vertretungsuebersicht/:date" element={deferred(<DayOverviewPage substitute />)} />
+      <Route path="/materialien/neu" element={deferred(<NewMaterialPage />)} />
+      <Route path="/materialien/:materialId" element={deferred(<MaterialWorkshopPage />)} />
+      <Route path="/materialien/:materialId/vorschau" element={deferred(<MaterialPreviewPage />)} />
+      <Route path="/materialien/:materialId/varianten" element={deferred(<MaterialFamilyPage />)} />
         {pages.map(([path, title, description]) => (
           <Route
             key={path}

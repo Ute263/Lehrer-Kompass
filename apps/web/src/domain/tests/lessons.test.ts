@@ -216,7 +216,7 @@ it("migriert v2 nach v3 und erhält Reihendaten", async () => {
   const next = new DomainDatabase(n);
   await next.open();
   expect(await next.seriesTemplates.get("kept-series")).toBeTruthy();
-  expect(next.verno).toBe(4);
+  expect(next.verno).toBe(5);
   await next.delete();
 });
 it("migriert vollständig v1 über v2 nach v3", async () => {
@@ -240,6 +240,6 @@ it("migriert vollständig v1 über v2 nach v3", async () => {
   const next = new DomainDatabase(n);
   await next.open();
   expect(await next.topics.get("kept-topic")).toBeTruthy();
-  expect(next.verno).toBe(4);
+  expect(next.verno).toBe(5);
   await next.delete();
 });

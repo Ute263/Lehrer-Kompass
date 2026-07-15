@@ -7,3 +7,5 @@ export * from "./lesson-model";
 export * from "./lesson-service";
 export * from "./calendar-model";
 export * from "./calendar-service";
+export * from "./material-model";
+export * from "./material-service";
