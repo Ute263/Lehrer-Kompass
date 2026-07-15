@@ -229,8 +229,19 @@ export function BuddyPanel({ pathname }: { pathname: string }) {
             <SuggestionView
               result={result}
               onToggle={async (row, selected) => {
+                setResult((current) =>
+                  current
+                    ? {
+                        ...current,
+                        changes: current.changes.map((change) =>
+                          change.id === row.id
+                            ? { ...change, selected }
+                            : change,
+                        ),
+                      }
+                    : current,
+                );
                 await buddyService.setSelected(row.id, selected);
-                setResult(await buddyService.suggestion(result.suggestion.id));
               }}
               onApply={apply}
               onDiscard={async () => {
