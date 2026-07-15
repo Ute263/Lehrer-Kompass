@@ -83,6 +83,8 @@ Die jsdom-Ausgabe zum nicht implementierten Canvas-Kontext ist ein bekannter Tes
 
 Unter `artifacts/package-06/` liegen 14 reale Browser-Screenshots: Reihendashboard, Erzeugungszustand, Überblick, beide Planungsansichten, Phasendialog, Zeitwarnung, Statusdialog, Reflexion, Werkbank, Tablet, Smartphone, abgesagte Stunde und Fehlerzustand.
 
+Technische Nachbesserung zu Beginn von Paket 07: Die Browseraufnahmen enthielten JPEG-Daten, waren zunächst jedoch mit `.png` benannt. Alle 14 Dateien wurden ohne inhaltliche Änderung nach `.jpg` umbenannt. Dateiendung und tatsächliches JPEG-Format stimmen nun überein.
+
 ## 20. Neue Abhängigkeiten
 
 Keine neue Laufzeit- oder Entwicklungsabhängigkeit wurde dauerhaft aufgenommen.

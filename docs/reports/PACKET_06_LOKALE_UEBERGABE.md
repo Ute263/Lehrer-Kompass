@@ -45,7 +45,7 @@ PATH=/Users/utemacbook/.cache/codex-runtimes/codex-primary-runtime/dependencies/
 
 ## Screenshots
 
-`artifacts/package-06/` enthält die 14 nummerierten, real im lokalen Browser erzeugten Nachweise. Tablet wurde mit 900×1100, Smartphone mit 390×844 geprüft; die Browserausgabe speichert JPEG-Daten unter den verlangten `.png`-Dateinamen.
+`artifacts/package-06/` enthält die 14 nummerierten, real im lokalen Browser erzeugten Nachweise. Tablet wurde mit 900×1100, Smartphone mit 390×844 geprüft. Als technische Nachbesserung zu Beginn von Paket 07 wurden die tatsächlich als JPEG gespeicherten Aufnahmen von `.png` nach `.jpg` umbenannt; Dateiendung und Bildformat stimmen jetzt überein.
 
 ## Offene manuelle Prüfungen
 
