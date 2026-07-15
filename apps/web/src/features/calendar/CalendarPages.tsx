@@ -62,7 +62,7 @@ function labelForSubject(
 }
 
 export function CalendarPage() {
-  const data = useCalendarData(),
+  const {date:routeDate}=useParams(),data = useCalendarData(),
     nav = useNavigate(),
     [params] = useSearchParams(),
     [view, setView] = useState(() =>
@@ -72,7 +72,7 @@ export function CalendarPage() {
           ? "Tag"
           : "Woche",
     ),
-    [date, setDate] = useState(params.get("date") ?? CALENDAR_SEED.date),
+    [date, setDate] = useState(routeDate??params.get("date") ?? CALENDAR_SEED.date),
     [planOpen, setPlanOpen] = useState(Boolean(params.get("lessonId"))),
     [specialOpen, setSpecialOpen] = useState(false);
   useEffect(() => localStorage.setItem(viewKey, view), [view]);
@@ -706,7 +706,7 @@ function ConfirmStatusDialog({
   status: "cancelled" | "completed";
   data: ReturnType<typeof useCalendarData>;
 }) {
-  const [alsoLesson, setAlsoLesson] = useState(false);
+  const [alsoLesson, setAlsoLesson] = useState(false),[cancelChoice,setCancelChoice]=useState<"unplanned"|"now"|"later">("later");
   return (
     <Dialog
       open={open}
@@ -721,6 +721,7 @@ function ConfirmStatusDialog({
         await calendarService.changeStatus(event.id, status, alsoLesson);
         onClose();
         await data.refresh();
+        if(status==="cancelled"&&cancelChoice==="now"&&event.lessonId)location.assign(`/stundenplan?lessonId=${event.lessonId}`);
       }}
     >
       <p>
@@ -729,10 +730,7 @@ function ConfirmStatusDialog({
           : "Der Kalendereintrag wird als durchgeführt markiert."}
       </p>
       {status === "cancelled" ? (
-        <p>
-          Die Stunde bleibt ungeplant und kann später bewusst neu terminiert
-          werden.
-        </p>
+        <SelectField id="cancel-next-step" label="Was soll mit der Unterrichtsstunde geschehen?" value={cancelChoice} onChange={e=>setCancelChoice(e.target.value as typeof cancelChoice)}><option value="unplanned">Stunde bleibt ungeplant</option><option value="now">Neuen Termin direkt auswählen</option><option value="later">Später entscheiden</option></SelectField>
       ) : (
         event.lessonId && (
           <label>
