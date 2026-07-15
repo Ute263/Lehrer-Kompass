@@ -1,5 +1,5 @@
 import{domainDb,SEED_IDS,type DomainDatabase}from"./database";import{clean,optional,DomainError}from"./model";import{ALLOWED_TRANSITIONS,seriesImplementationSchema,seriesPlanningSchema,seriesSequenceItemSchema,seriesTemplateSchema,seriesWorkbenchRefSchema,type SeriesPlanning,type SeriesStatus}from"./series-model";
-const stamp=()=>new Date().toISOString(),id=()=>crypto.randomUUID(),same=(a:string,b:string)=>clean(a).toLocaleLowerCase("de-DE")===clean(b).toLocaleLowerCase("de-DE");
+const stamp=()=>new Date().toISOString(),id=()=>crypto.randomUUID(),same=(a:string,b:string)=>clean(a).toLocaleLowerCase("de-DE")===clean(b).toLocaleLowerCase("de-DE"),readiness=new WeakMap<DomainDatabase,Promise<void>>();
 export const SERIES_SEED={template:"template-nomen",implementation:"implementation-nomen",planning:"planning-nomen"};
 const emptyPlanning=(implementationId:string,t=stamp()):SeriesPlanning=>({id:id(),implementationId,foundations:"",learningPrerequisites:"",goalsAndCompetencies:"",contentStructure:"",differentiation:"",assessmentPlan:"",createdAt:t,updatedAt:t});
 export class SeriesService{constructor(public db:DomainDatabase=domainDb){}
@@ -15,3 +15,5 @@ async reorderSequence(implementationId:string,itemId:string,direction:-1|1){cons
 async moveSequence(implementationId:string,itemId:string,targetId:string){const rows=await this.db.seriesSequenceItems.where("implementationId").equals(implementationId).sortBy("position"),from=rows.findIndex(v=>v.id===itemId),to=rows.findIndex(v=>v.id===targetId);if(from<0||to<0)throw new DomainError("SERIES_SEQUENCE_ITEM_NOT_FOUND","Gliederungspunkt nicht gefunden.");const[moved]=rows.splice(from,1);if(!moved)return;rows.splice(to,0,moved);await this.db.seriesSequenceItems.bulkPut(rows.map((v,position)=>({...v,position,updatedAt:stamp()})))}
 async toggleWorkbench(implementationId:string,active:boolean){const ref=await this.db.seriesWorkbenchRefs.where("implementationId").equals(implementationId).first();if(!ref)throw new DomainError("SERIES_IMPLEMENTATION_NOT_FOUND","Werkbankverweis nicht gefunden.");await this.db.seriesWorkbenchRefs.update(ref.id,{isActive:active,updatedAt:stamp()})}}
 export const seriesService=new SeriesService();
+let sharedSnapshot:Promise<Awaited<ReturnType<typeof seriesService.snapshot>>>|undefined;
+export function getSeriesSnapshot(){if(!sharedSnapshot)sharedSnapshot=seriesService.snapshot().finally(()=>{sharedSnapshot=undefined});return sharedSnapshot;}

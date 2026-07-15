@@ -13,6 +13,7 @@ export const workbenchItemSchema = z.object({
   classLabel: z.string().optional(), subjectLabel: z.string().optional(), topicLabel: z.string().optional(),
   classId: z.string().optional(), subjectId: z.string().optional(), topicId: z.string().optional(),
   templateId:z.string().optional(),implementationId:z.string().optional(),
+  lessonId:z.string().optional(),
   status: z.enum(WORKBENCH_STATUSES), nextStep: z.string().optional(), progressText: z.string().optional(), nextDate: z.string().optional(),
   lastEditedAt: z.string().datetime(), pinned: z.boolean(), removedFromWorkbench: z.boolean(), targetRoute: z.string().startsWith("/")
 });

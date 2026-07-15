@@ -6,6 +6,7 @@ import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePag
 import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
 import{NewSeriesPage,SeriesDashboard,TemplatePage,TopicSeriesPage}from"../features/series/SeriesPages";
+import{LessonPage}from"../features/lessons/LessonPages";
 import { AppShell } from "./AppShell";
 import { APP_ROUTES } from "./routes";
 
@@ -31,6 +32,7 @@ export function AppRoutes() {
       <Route path="/reihen/neu" element={<NewSeriesPage />} />
       <Route path="/reihen/:implementationId" element={<SeriesDashboard />} />
       <Route path="/stammreihen/:templateId" element={<TemplatePage />} />
+      <Route path="/stunden/:lessonId" element={<LessonPage />} />
       {pages.map(([path, title, description]) => <Route key={path} path={path} element={<PlaceholderPage title={title} description={description} />} />)}
       <Route path="/prototyp/:bereich/:slug" element={<PrototypeWorkspacePage />} />
       <Route path="*" element={<NotFoundPage />} />
