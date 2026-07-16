@@ -7,6 +7,7 @@ import { LibraryPage } from "../features/library/LibraryPage";
 import { SupportPage } from "../features/support/SupportPage";
 import { FoundationsPage } from "../features/foundations/FoundationsPage";
 import { SettingsPage } from "../features/settings/SettingsPage";
+import { BuddyPage } from "../features/buddy/BuddyPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
 import { NewSeriesPage, SeriesDashboard, TemplatePage, TopicSeriesPage } from "../features/series/SeriesPages";
 import { LessonPage } from "../features/lessons/LessonPages";
@@ -38,6 +39,7 @@ export function AppRoutes() {
       <Route path={APP_ROUTES.support} element={<SupportPage />} />
       <Route path={APP_ROUTES.foundations} element={<FoundationsPage />} />
       <Route path={APP_ROUTES.settings} element={<SettingsPage />} />
+      <Route path="/buddy" element={<BuddyPage />} />
       <Route path="/server-test" element={<ServerModePage />} />
       <Route path="/einstellungen/sicherung" element={<BackupPage />} />
       <Route path="/einstellungen/import" element={<ImportPage />} />
