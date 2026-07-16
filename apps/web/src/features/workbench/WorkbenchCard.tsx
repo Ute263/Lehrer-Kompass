@@ -8,7 +8,7 @@ export function WorkbenchCard({ item, onTogglePinned, onRemove, onContinue }: { 
   const navigate=useNavigate(); const headingId=`workbench-${item.id}`; const StatusIcon=item.status==="completed"?CheckCircle2:CircleDot;
   const open=()=>{onContinue();navigate(item.targetRoute);};
   return <Card className="workbench-card" aria-labelledby={headingId}>
-    <div className="workbench-card__top"><span className="workbench-card__type">{TYPE_LABELS[item.type]}</span><Menu label={`Mehr zu ${item.title}`} items={[{label:"Öffnen",onSelect:open},{label:"Duplizieren – später verfügbar",disabled:true},{label:"Für neue Klasse übernehmen – später verfügbar",disabled:true},{label:"Löschen – später verfügbar",disabled:true}]} /></div>
+    <div className="workbench-card__top"><span className="workbench-card__type">{TYPE_LABELS[item.type]}</span><Menu label={`Mehr zu ${item.title}`} items={[{label:"Öffnen",onSelect:open},{label:item.pinned?"Nicht mehr anheften":"Anheften",onSelect:onTogglePinned},{label:"Von der Werkbank nehmen",onSelect:onRemove}]} /></div>
     <h3 id={headingId}>{item.title}</h3><p className="workbench-card__context">{contextFor(item)}</p>
     <div className="workbench-card__status"><Badge tone={item.status==="ready"||item.status==="completed"?"success":item.status==="needs-revision"?"warning":"info"}><StatusIcon aria-hidden="true" size={15} />{STATUS_LABELS[item.status]}</Badge>{item.pinned&&<span className="pinned-label"><Pin aria-hidden="true" size={15} />Angeheftet</span>}</div>
     {item.nextStep&&<div className="next-step"><span>Nächster Schritt</span><strong>{item.nextStep}</strong></div>}
