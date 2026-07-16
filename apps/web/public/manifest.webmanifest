@@ -1,17 +1,17 @@
 {
-  "id": "/",
+  "id": "/Lehrer-Kompass/",
   "name": "LehrerKompass",
   "short_name": "LehrerKompass",
   "description": "Der ruhige lokale Unterrichtsarbeitsplatz",
-  "start_url": "/werkbank",
-  "scope": "/",
+  "start_url": "/Lehrer-Kompass/#/werkbank",
+  "scope": "/Lehrer-Kompass/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
   "background_color": "#f8faf8",
   "theme_color": "#dcefee",
   "orientation": "any",
   "icons": [
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/Lehrer-Kompass/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/Lehrer-Kompass/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }
