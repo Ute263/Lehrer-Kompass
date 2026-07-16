@@ -48,9 +48,9 @@ export function AppShell() {
   return <div className={`application-frame ${collapsed ? "application-frame--collapsed" : ""}`}>
     <a className="skip-link" href="#main-content" onClick={() => mainRef.current?.focus()}>Zum Hauptinhalt</a>
     <aside className="main-navigation" aria-label="LehrerKompass">
-      <div className="app-brand"><span aria-hidden="true">LK</span><strong>LehrerKompass</strong></div>
+      <div className="app-brand"><span aria-hidden="true">LK</span><span className="app-brand__text"><strong>LehrerKompass</strong><small>The Quiet Workspace</small></span></div>
       <NavigationLinks collapsed={collapsed} />
-      <div className="profile-summary"><UserRound aria-hidden="true" /><span><strong>Mein Arbeitsplatz</strong><small>Persönlicher Bereich</small></span></div>
+      <div className="profile-summary"><span className="profile-summary__avatar" aria-hidden="true">U</span><span><strong>Mein Arbeitsplatz</strong><small>Persönlicher Bereich</small></span></div>
     </aside>
 
     <div className="application-content">
@@ -61,7 +61,7 @@ export function AppShell() {
       <PwaNotices /><main id="main-content" ref={mainRef} tabIndex={-1}><Outlet /></main>
     </div>
 
-    {mobileOpen && <div className="mobile-navigation-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileOpen(false); }}><aside ref={mobileNavRef} className="mobile-navigation" aria-label="Mobile Hauptnavigation"><div className="overlay__header"><div className="app-brand"><span aria-hidden="true">LK</span><strong>LehrerKompass</strong></div><IconButton label="Mobile Navigation schließen" onClick={() => setMobileOpen(false)}><X aria-hidden="true" /></IconButton></div><NavigationLinks collapsed={false} onNavigate={() => setMobileOpen(false)} /></aside></div>}
+    {mobileOpen && <div className="mobile-navigation-layer" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setMobileOpen(false); }}><aside ref={mobileNavRef} className="mobile-navigation" aria-label="Mobile Hauptnavigation"><div className="overlay__header"><div className="app-brand"><span aria-hidden="true">LK</span><span className="app-brand__text"><strong>LehrerKompass</strong><small>The Quiet Workspace</small></span></div><IconButton label="Mobile Navigation schließen" onClick={() => setMobileOpen(false)}><X aria-hidden="true" /></IconButton></div><NavigationLinks collapsed={false} onNavigate={() => setMobileOpen(false)} /></aside></div>}
 
     <Drawer open={drawer !== null} title={drawerTitle} onClose={closeDrawer}>{drawer === "buddy" ? <BuddyPanel pathname={location.pathname}/> : <><p>Hier erscheinen später passende Materialien zum aktuellen Arbeitskontext.</p><Notice variant="info" title="Platzhalter">Noch keine Bibliothekssuche aktiv.</Notice></>}</Drawer>
   </div>;
