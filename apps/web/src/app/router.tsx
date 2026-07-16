@@ -1,12 +1,12 @@
 import { lazy, Suspense, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NotFoundPage } from "../pages/NotFoundPage";
-import { PlaceholderPage } from "../pages/PlaceholderPage";
 import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePage";
 import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 import { LibraryPage } from "../features/library/LibraryPage";
 import { SupportPage } from "../features/support/SupportPage";
 import { FoundationsPage } from "../features/foundations/FoundationsPage";
+import { SettingsPage } from "../features/settings/SettingsPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
 import { NewSeriesPage, SeriesDashboard, TemplatePage, TopicSeriesPage } from "../features/series/SeriesPages";
 import { LessonPage } from "../features/lessons/LessonPages";
@@ -28,10 +28,6 @@ const MaterialPreviewPage = lazy(() => materialPages().then((module) => ({ defau
 const MaterialFamilyPage = lazy(() => materialPages().then((module) => ({ default: module.MaterialFamilyPage })));
 const deferred = (page: ReactNode) => <Suspense fallback={<p role="status">Arbeitsbereich wird geladen …</p>}>{page}</Suspense>;
 
-const pages = [
-  [APP_ROUTES.settings,"Einstellungen","Hier werden später persönliche, technische und datenschutzbezogene Einstellungen verwaltet."],
-] as const;
-
 export function AppRoutes() {
   return <Routes>
     <Route path={APP_ROUTES.designSystem} element={deferred(<DesignSystemPage />)} />
@@ -41,6 +37,7 @@ export function AppRoutes() {
       <Route path={APP_ROUTES.library} element={<LibraryPage />} />
       <Route path={APP_ROUTES.support} element={<SupportPage />} />
       <Route path={APP_ROUTES.foundations} element={<FoundationsPage />} />
+      <Route path={APP_ROUTES.settings} element={<SettingsPage />} />
       <Route path="/server-test" element={<ServerModePage />} />
       <Route path="/einstellungen/sicherung" element={<BackupPage />} />
       <Route path="/einstellungen/import" element={<ImportPage />} />
@@ -66,7 +63,6 @@ export function AppRoutes() {
       <Route path="/materialien/:materialId" element={deferred(<MaterialWorkshopPage />)} />
       <Route path="/materialien/:materialId/vorschau" element={deferred(<MaterialPreviewPage />)} />
       <Route path="/materialien/:materialId/varianten" element={deferred(<MaterialFamilyPage />)} />
-      {pages.map(([path, title, description]) => <Route key={path} path={path} element={<PlaceholderPage title={title} description={description} />} />)}
       <Route path="/prototyp/:bereich/:slug" element={<PrototypeWorkspacePage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Route>
