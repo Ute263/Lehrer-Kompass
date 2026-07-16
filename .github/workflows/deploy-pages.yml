@@ -36,6 +36,8 @@ jobs:
         run: pnpm install --no-frozen-lockfile --ignore-scripts
 
       - name: LehrerKompass-Web-App bauen
+        env:
+          VITE_BASE_PATH: /Lehrer-Kompass/
         run: pnpm exec vite build --config apps/web/vite.config.ts
 
       - name: GitHub Pages konfigurieren
