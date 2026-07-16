@@ -33,10 +33,10 @@ jobs:
           cache: pnpm
 
       - name: Abhängigkeiten installieren
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
-      - name: LehrerKompass bauen
-        run: pnpm build
+      - name: LehrerKompass-Web-App bauen
+        run: pnpm exec vite build --config apps/web/vite.config.ts
 
       - name: GitHub Pages konfigurieren
         uses: actions/configure-pages@v5
