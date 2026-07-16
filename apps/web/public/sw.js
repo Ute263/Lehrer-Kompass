@@ -1,5 +1,5 @@
-const BASE = "/Lehrer-Kompass/";
-const CACHE = "lehrerkompass-app-v2";
+const BASE = new URL(self.registration.scope).pathname;
+const CACHE = "lehrerkompass-app-v3";
 const CORE = [BASE, `${BASE}manifest.webmanifest`, `${BASE}icons/icon-192.png`, `${BASE}icons/icon-512.png`];
 
 self.addEventListener("install", (event) => {
