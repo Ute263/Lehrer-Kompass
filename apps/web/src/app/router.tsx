@@ -6,6 +6,7 @@ import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePag
 import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 import { LibraryPage } from "../features/library/LibraryPage";
 import { SupportPage } from "../features/support/SupportPage";
+import { FoundationsPage } from "../features/foundations/FoundationsPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
 import { NewSeriesPage, SeriesDashboard, TemplatePage, TopicSeriesPage } from "../features/series/SeriesPages";
 import { LessonPage } from "../features/lessons/LessonPages";
@@ -28,7 +29,6 @@ const MaterialFamilyPage = lazy(() => materialPages().then((module) => ({ defaul
 const deferred = (page: ReactNode) => <Suspense fallback={<p role="status">Arbeitsbereich wird geladen …</p>}>{page}</Suspense>;
 
 const pages = [
-  [APP_ROUTES.foundations,"Schule und Grundlagen","Hier werden später Lehrwerke, Arbeitspläne und weitere schulische Grundlagen hinterlegt."],
   [APP_ROUTES.settings,"Einstellungen","Hier werden später persönliche, technische und datenschutzbezogene Einstellungen verwaltet."],
 ] as const;
 
@@ -40,6 +40,7 @@ export function AppRoutes() {
       <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
       <Route path={APP_ROUTES.library} element={<LibraryPage />} />
       <Route path={APP_ROUTES.support} element={<SupportPage />} />
+      <Route path={APP_ROUTES.foundations} element={<FoundationsPage />} />
       <Route path="/server-test" element={<ServerModePage />} />
       <Route path="/einstellungen/sicherung" element={<BackupPage />} />
       <Route path="/einstellungen/import" element={<ImportPage />} />
