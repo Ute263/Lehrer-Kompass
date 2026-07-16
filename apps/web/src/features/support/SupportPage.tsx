@@ -1,0 +1,46 @@
+import { FormEvent, useMemo, useState } from "react";
+import { BookOpen, CalendarDays, CheckCircle2, ChevronRight, Clock3, Library, Plus, Target, Users } from "lucide-react";
+import { Button, Card, Dialog, Notice, TextAreaField, TextField } from "../../design-system/components";
+import "./support.css";
+
+type GoalStatus = "planned" | "working" | "reached";
+type SupportUnit = { id:string; title:string; date:string; achieved:string; nextStep:string; materialTitle?:string };
+type SupportSeries = { id:string; title:string; goal:string; goalStatus:GoalStatus; units:SupportUnit[] };
+type SupportGroup = { id:string; name:string; focus:string; weekday:string; time:string; duration:number; room:string; participants:string; series:SupportSeries[] };
+
+const KEY="lehrerkompass-support-v1";
+const seed:SupportGroup[]=[{id:"support-language",name:"Fördergruppe Sprache",focus:"Sprache und Kommunikation",weekday:"Mittwoch",time:"10:15",duration:45,room:"Förderraum",participants:"4 Kinder",series:[{id:"series-syllables",title:"Silben sicher erkennen",goal:"Silben in gesprochenen und geschriebenen Wörtern erkennen und nutzen.",goalStatus:"working",units:[{id:"unit-1",title:"Silben hören und klatschen",date:"2026-07-15",achieved:"Zweisilbige Wörter wurden sicher geklatscht.",nextStep:"Silbenbögen auf Wörter übertragen.",materialTitle:"Silbenkarten"}]}]}];
+const read=():SupportGroup[]=>{try{return JSON.parse(localStorage.getItem(KEY)??"null")??seed}catch{return seed}};
+const save=(rows:SupportGroup[])=>localStorage.setItem(KEY,JSON.stringify(rows));
+const id=()=>crypto.randomUUID?.()??`${Date.now()}-${Math.random()}`;
+const statusLabel:Record<GoalStatus,string>={planned:"Geplant",working:"In Arbeit",reached:"Erreicht"};
+
+export function SupportPage(){
+ const [groups,setGroups]=useState<SupportGroup[]>(read); const [selectedId,setSelectedId]=useState(groups[0]?.id); const [dialog,setDialog]=useState<"group"|"series"|"unit"|null>(null); const [message,setMessage]=useState("");
+ const selected=useMemo(()=>groups.find(v=>v.id===selectedId),[groups,selectedId]);
+ const persist=(next:SupportGroup[])=>{setGroups(next);save(next)};
+ const addGroup=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();const data=new FormData(event.currentTarget);const group:SupportGroup={id:id(),name:String(data.get("name")),focus:String(data.get("focus")),weekday:String(data.get("weekday")),time:String(data.get("time")),duration:Number(data.get("duration"))||45,room:String(data.get("room")),participants:String(data.get("participants")),series:[]};persist([...groups,group]);setSelectedId(group.id);setDialog(null);setMessage("Fördergruppe wurde angelegt und lokal gespeichert.")};
+ const addSeries=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(!selected)return;const data=new FormData(event.currentTarget);const series:SupportSeries={id:id(),title:String(data.get("title")),goal:String(data.get("goal")),goalStatus:"planned",units:[]};persist(groups.map(v=>v.id===selected.id?{...v,series:[...v.series,series]}:v));setDialog(null);setMessage("Förderreihe wurde angelegt.")};
+ const addUnit=(event:FormEvent<HTMLFormElement>)=>{event.preventDefault();if(!selected)return;const data=new FormData(event.currentTarget);const seriesId=String(data.get("seriesId"));const unit:SupportUnit={id:id(),title:String(data.get("title")),date:String(data.get("date")),achieved:String(data.get("achieved")),nextStep:String(data.get("nextStep")),materialTitle:String(data.get("materialTitle"))||undefined};persist(groups.map(g=>g.id===selected.id?{...g,series:g.series.map(s=>s.id===seriesId?{...s,units:[...s.units,unit]}:s)}:g));setDialog(null);setMessage("Fördereinheit und Verlauf wurden gespeichert.")};
+ const cycleGoal=(seriesId:string)=>{if(!selected)return;persist(groups.map(g=>g.id===selected.id?{...g,series:g.series.map(s=>s.id===seriesId?{...s,goalStatus:s.goalStatus==="planned"?"working":s.goalStatus==="working"?"reached":"planned"}:s)}:g))};
+ return <div className="support-page">
+  <header className="support-header"><div><p className="eyebrow">Unterricht organisieren</p><h1>Förderunterricht</h1><p>Plane Fördergruppen, Förderreihen und einzelne Einheiten – getrennt von der ausführlichen Förderplanung im FörderKompass.</p></div><Button onClick={()=>setDialog("group")}><Plus/> Neue Fördergruppe</Button></header>
+  {message&&<Notice variant="success" title="Gespeichert">{message}</Notice>}
+  <div className="support-layout">
+   <aside className="support-groups" aria-label="Fördergruppen"><h2>Meine Fördergruppen</h2>{groups.map(group=><button key={group.id} className={selectedId===group.id?"is-active":""} onClick={()=>setSelectedId(group.id)}><span className="support-group-icon"><Users/></span><span><strong>{group.name}</strong><small>{group.focus}</small></span><ChevronRight/></button>)}{!groups.length&&<p>Noch keine Fördergruppe angelegt.</p>}</aside>
+   <main className="support-workspace">{selected?<>
+    <Card className="support-overview"><div><p className="eyebrow">Aktive Fördergruppe</p><h2>{selected.name}</h2><p>{selected.focus}</p></div><dl><div><dt><CalendarDays/> Termin</dt><dd>{selected.weekday}, {selected.time} Uhr</dd></div><div><dt><Clock3/> Dauer</dt><dd>{selected.duration} Minuten</dd></div><div><dt><Users/> Gruppe</dt><dd>{selected.participants}</dd></div><div><dt>Raum</dt><dd>{selected.room||"–"}</dd></div></dl></Card>
+    <section className="support-section"><div className="support-section-heading"><div><p className="eyebrow">Förderreihen</p><h2>Ziele und Einheiten</h2></div><Button variant="secondary" onClick={()=>setDialog("series")}><Plus/> Reihe anlegen</Button></div>
+     {selected.series.length?selected.series.map(series=><Card key={series.id} className="support-series"><div className="support-series-head"><div><Target/><div><h3>{series.title}</h3><p>{series.goal}</p></div></div><button className={`goal-status goal-status--${series.goalStatus}`} onClick={()=>cycleGoal(series.id)}><CheckCircle2/>{statusLabel[series.goalStatus]}</button></div>
+      <div className="support-units">{series.units.map(unit=><article key={unit.id}><div><strong>{unit.title}</strong><span>{new Date(unit.date).toLocaleDateString("de-DE")}</span></div><p><b>Geschafft:</b> {unit.achieved||"Noch nicht dokumentiert"}</p><p><b>Nächster Schritt:</b> {unit.nextStep||"Noch offen"}</p>{unit.materialTitle&&<p className="support-material"><Library/> {unit.materialTitle}</p>}</article>)}{!series.units.length&&<p>Noch keine Fördereinheit in dieser Reihe.</p>}</div>
+     </Card>):<Notice variant="info" title="Noch keine Förderreihe">Lege die erste Förderreihe mit einem konkreten Ziel an.</Notice>}
+     {selected.series.length>0&&<Button onClick={()=>setDialog("unit")}><Plus/> Fördereinheit dokumentieren</Button>}
+    </section>
+    <Notice variant="info" title="Ausführliche Förderplanung">Dieser Bereich organisiert Gruppen und Unterricht. Individuelle Förderpläne bleiben im eigenständigen FörderKompass.</Notice>
+   </>:<Notice variant="info" title="Fördergruppe auswählen">Lege eine Fördergruppe an oder wähle links eine vorhandene Gruppe.</Notice>}</main>
+  </div>
+  <Dialog open={dialog==="group"} title="Neue Fördergruppe" onClose={()=>setDialog(null)} hideDefaultActions><form className="support-form" onSubmit={addGroup}><TextField id="support-name" name="name" label="Name der Fördergruppe" required/><TextField id="support-focus" name="focus" label="Förderbereich" required/><div className="support-form-row"><TextField id="support-weekday" name="weekday" label="Wochentag"/><TextField id="support-time" name="time" type="time" label="Uhrzeit"/></div><div className="support-form-row"><TextField id="support-duration" name="duration" type="number" label="Dauer in Minuten" defaultValue="45"/><TextField id="support-room" name="room" label="Raum"/></div><TextField id="support-participants" name="participants" label="Teilnehmende (anonymisiert)" hint="Zum Beispiel: 4 Kinder oder Gruppe A"/><Button type="submit">Fördergruppe speichern</Button></form></Dialog>
+  <Dialog open={dialog==="series"} title="Neue Förderreihe" onClose={()=>setDialog(null)} hideDefaultActions><form className="support-form" onSubmit={addSeries}><TextField id="series-title" name="title" label="Titel" required/><TextAreaField id="series-goal" name="goal" label="Förderziel" required/><Button type="submit">Förderreihe speichern</Button></form></Dialog>
+  <Dialog open={dialog==="unit"} title="Fördereinheit dokumentieren" onClose={()=>setDialog(null)} hideDefaultActions><form className="support-form" onSubmit={addUnit}><label>Förderreihe<select name="seriesId" required>{selected?.series.map(s=><option value={s.id} key={s.id}>{s.title}</option>)}</select></label><TextField id="unit-title" name="title" label="Titel der Einheit" required/><TextField id="unit-date" name="date" type="date" label="Datum" defaultValue={new Date().toISOString().slice(0,10)} required/><TextAreaField id="unit-achieved" name="achieved" label="Heute geschafft"/><TextAreaField id="unit-next" name="nextStep" label="Nächster Schritt"/><TextField id="unit-material" name="materialTitle" label="Verwendetes Material" hint="Material aus der Bibliothek oder eigener Titel"/><Button type="submit">Einheit und Verlauf speichern</Button></form></Dialog>
+ </div>;
+}
