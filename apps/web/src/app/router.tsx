@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePage";
 import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
+import { PlanningDialoguePage } from "../features/planning/PlanningDialoguePage";
 import { LibraryPage } from "../features/library/LibraryPage";
 import { SupportPage } from "../features/support/SupportPage";
 import { FoundationsPage } from "../features/foundations/FoundationsPage";
@@ -35,6 +36,7 @@ export function AppRoutes() {
     <Route element={<AppShell />}>
       <Route index element={<Navigate to={APP_ROUTES.workbench} replace />} />
       <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
+      <Route path="/unterricht-planen" element={<PlanningDialoguePage />} />
       <Route path={APP_ROUTES.library} element={<LibraryPage />} />
       <Route path={APP_ROUTES.support} element={<SupportPage />} />
       <Route path={APP_ROUTES.foundations} element={<FoundationsPage />} />
