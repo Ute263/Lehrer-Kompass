@@ -28,74 +28,51 @@ export function WorkbenchPage() {
 
       {recent && (
         <section className="recent-work" aria-labelledby="recent-work-title">
-          <div className="recent-work__icon" aria-hidden="true">
-            <BookOpen />
-          </div>
+          <div className="recent-work__icon" aria-hidden="true"><BookOpen /></div>
           <div className="recent-work__content">
             <span>Zuletzt bearbeitet</span>
             <h2 id="recent-work-title">{recent.title}</h2>
-            <p>
-              {[recent.classLabel, recent.subjectLabel, recent.topicLabel]
-                .filter(Boolean)
-                .join(" · ") || recent.subtitle}
-            </p>
+            <p>{[recent.classLabel, recent.subjectLabel, recent.topicLabel].filter(Boolean).join(" · ") || recent.subtitle}</p>
           </div>
-          <Link
-            className="recent-work__action"
-            to={recent.targetRoute}
-            onClick={() => workbench.markEdited(recent.id)}
-          >
-            Weiterarbeiten <ArrowRight aria-hidden="true" />
-          </Link>
+          <Link className="recent-work__action" to={recent.targetRoute} onClick={() => workbench.markEdited(recent.id)}>Weiterarbeiten <ArrowRight aria-hidden="true" /></Link>
         </section>
       )}
 
       <main className="primary-paths" aria-label="Hauptaufgaben">
         <section className="primary-path primary-path--planning">
-          <div className="primary-path__icon" aria-hidden="true">
-            <CalendarDays />
-          </div>
+          <div className="primary-path__icon" aria-hidden="true"><CalendarDays /></div>
           <div>
             <p className="primary-path__eyebrow">Unterricht planen</p>
-            <h2>Heute, diese Woche oder eine neue Reihe</h2>
-            <p>Plane Unterricht, ohne zuerst durch mehrere Verwaltungsseiten zu gehen.</p>
+            <h2>Thema nennen – Grobplanung erhalten</h2>
+            <p>Gib Thema, Klasse, Fach und Stundenanzahl ein. Danach entscheidest du, welche Materialien du nutzen oder erstellen möchtest.</p>
           </div>
           <div className="primary-path__actions">
+            <Link className="primary-path__main-action" to="/unterricht-planen">Planung beginnen <ArrowRight aria-hidden="true" /></Link>
             <Link to="/stundenplan">Stundenplan öffnen</Link>
-            <Link to="/reihen/neu">Neue Unterrichtsreihe</Link>
-            <Link to="/klassen">Neue Stunde planen</Link>
           </div>
         </section>
 
         <section className="primary-path primary-path--material">
-          <div className="primary-path__icon" aria-hidden="true">
-            <FilePlus2 />
-          </div>
+          <div className="primary-path__icon" aria-hidden="true"><FilePlus2 /></div>
           <div>
             <p className="primary-path__eyebrow">Material erstellen</p>
-            <h2>Arbeitsblatt, Lösungsblatt oder Lernmaterial</h2>
+            <h2>Arbeitsblatt, Spiel oder Lernmaterial</h2>
             <p>Beginne direkt mit dem Material. Thema, Klasse und Umfang werden im nächsten Schritt festgelegt.</p>
           </div>
           <div className="primary-path__actions">
-            <Link className="primary-path__main-action" to="/materialien/neu">
-              Neues Material erstellen <ArrowRight aria-hidden="true" />
-            </Link>
+            <Link className="primary-path__main-action" to="/materialien/neu">Neues Material erstellen <ArrowRight aria-hidden="true" /></Link>
           </div>
         </section>
 
         <section className="primary-path primary-path--library">
-          <div className="primary-path__icon" aria-hidden="true">
-            <FolderSearch />
-          </div>
+          <div className="primary-path__icon" aria-hidden="true"><FolderSearch /></div>
           <div>
             <p className="primary-path__eyebrow">Material finden</p>
             <h2>Eigene Inhalte schnell wiederfinden</h2>
             <p>Suche nach Unterrichtsreihen, Stunden und Materialien, statt dich durch Kacheln zu arbeiten.</p>
           </div>
           <div className="primary-path__actions">
-            <Link className="primary-path__main-action" to="/bibliothek">
-              Bibliothek öffnen <ArrowRight aria-hidden="true" />
-            </Link>
+            <Link className="primary-path__main-action" to="/bibliothek">Bibliothek öffnen <ArrowRight aria-hidden="true" /></Link>
           </div>
         </section>
       </main>
