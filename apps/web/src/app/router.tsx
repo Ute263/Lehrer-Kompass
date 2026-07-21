@@ -2,7 +2,6 @@ import { lazy, Suspense, type ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NotFoundPage } from "../pages/NotFoundPage";
 import { PrototypeWorkspacePage } from "../pages/prototype/PrototypeWorkspacePage";
-import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 import { LibraryPage } from "../features/library/LibraryPage";
 import { SupportPage } from "../features/support/SupportPage";
 import { FoundationsPage } from "../features/foundations/FoundationsPage";
@@ -10,6 +9,7 @@ import { SettingsPage } from "../features/settings/SettingsPage";
 import { BuddyPage } from "../features/buddy/BuddyPage";
 import { TopicsOverviewPage } from "../features/topics/TopicsOverviewPage";
 import { TopicDetailPage } from "../features/topics/TopicDetailPage";
+import { TopicLessonPage } from "../features/topics/TopicLessonPage";
 import { ClassesPage, ClassDetailPage, SchoolYearsPage, SubjectPage } from "../features/classes/ClassWorkspace";
 import { NewSeriesPage, SeriesDashboard, TemplatePage, TopicSeriesPage } from "../features/series/SeriesPages";
 import { LessonPage } from "../features/lessons/LessonPages";
@@ -35,10 +35,11 @@ export function AppRoutes() {
   return <Routes>
     <Route path={APP_ROUTES.designSystem} element={deferred(<DesignSystemPage />)} />
     <Route element={<AppShell />}>
-      <Route index element={<Navigate to={APP_ROUTES.workbench} replace />} />
-      <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
+      <Route index element={<Navigate to="/themen" replace />} />
+      <Route path={APP_ROUTES.workbench} element={<Navigate to="/themen" replace />} />
       <Route path="/themen" element={<TopicsOverviewPage />} />
       <Route path="/themen/:topicId" element={<TopicDetailPage />} />
+      <Route path="/themen/:topicId/stunden/:lessonId" element={<TopicLessonPage />} />
       <Route path={APP_ROUTES.library} element={<LibraryPage />} />
       <Route path={APP_ROUTES.support} element={<SupportPage />} />
       <Route path={APP_ROUTES.foundations} element={<FoundationsPage />} />
