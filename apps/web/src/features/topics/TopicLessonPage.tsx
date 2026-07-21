@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import { addMaterial, readTopics, updateTopic, type TopicRecord } from "./topicStore";
 import "./topic-center.css";
 
+type EditableLessonField = "title" | "objective" | "opening" | "development" | "consolidation" | "reflection" | "notes";
+
 export function TopicLessonPage() {
   const { topicId, lessonId } = useParams();
   const [topic, setTopic] = useState<TopicRecord | null>(() => readTopics().find((item) => item.id === topicId) || null);
@@ -13,8 +15,8 @@ export function TopicLessonPage() {
   const lessonIndex = topic.lessons.findIndex((lesson) => lesson.id === lessonId);
   const lesson = topic.lessons[lessonIndex];
   if (!lesson) return <div className="planner-portrait"><main className="planner-page"><Link to={`/themen/${topic.id}`}><ArrowLeft />Zur Reihe</Link><p>Stunde nicht gefunden.</p></main></div>;
-  const saveLesson = (field: keyof typeof lesson, value: string) => {
-    const next = { ...topic, lessons: topic.lessons.map((entry, index) => index === lessonIndex ? { ...entry, [field]: value } : entry) };
+  const saveLesson = (field: EditableLessonField, value: string) => {
+    const next: TopicRecord = { ...topic, lessons: topic.lessons.map((entry, index) => index === lessonIndex ? { ...entry, [field]: value } : entry) };
     setTopic(next); updateTopic(next);
   };
   const materials = topic.materials.filter((material) => material.lessonId === lesson.id);
