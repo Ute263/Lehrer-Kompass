@@ -17,6 +17,7 @@ import { AppShell } from "./AppShell";
 import { APP_ROUTES } from "./routes";
 import { ServerModePage } from "../features/server/ServerModePage";
 import { BackupPage, DataPage, ExchangePage, ImportPage, InstallationPage } from "../features/local-app/LocalAppPages";
+import { WorkbenchPage } from "../features/workbench/WorkbenchPage";
 
 const DesignSystemPage = lazy(() => import("../prototype/DesignSystemPage").then((module) => ({ default: module.DesignSystemPage })));
 const calendarPages = () => import("../features/calendar/CalendarPages");
@@ -35,8 +36,8 @@ export function AppRoutes() {
   return <Routes>
     <Route path={APP_ROUTES.designSystem} element={deferred(<DesignSystemPage />)} />
     <Route element={<AppShell />}>
-      <Route index element={<Navigate to="/themen" replace />} />
-      <Route path={APP_ROUTES.workbench} element={<Navigate to="/themen" replace />} />
+      <Route index element={<Navigate to="/werkbank" replace />} />
+      <Route path={APP_ROUTES.workbench} element={<WorkbenchPage />} />
       <Route path="/themen" element={<TopicsOverviewPage />} />
       <Route path="/themen/:topicId" element={<TopicDetailPage />} />
       <Route path="/themen/:topicId/stunden/:lessonId" element={<TopicLessonPage />} />
